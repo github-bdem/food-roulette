@@ -1,13 +1,17 @@
-import reactLogo from '@assets/logos/GitHub-Mark-64px.png'
+import reactLogo from "@assets/logos/GitHub-Mark-64px.png";
 
-const GithubLink = () => {
+function GithubLink() {
     return (
-        <div className="GithubLink">
-            <a href="https://github.com/bdell/goto.pizza" target="_blank" rel="noopener noreferrer">
+        <div>
+            <a
+                href="https://github.com/github-bdem/goto.pizza"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
                 <img src={reactLogo} alt="Github Link" />
             </a>
         </div>
     );
-};
+}
 
 export default GithubLink;

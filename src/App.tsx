@@ -6,6 +6,7 @@ function App() {
         <>
             <GithubLink />
             <PizzaMap />
+            <button className="btn">Button</button>
         </>
     );
 }

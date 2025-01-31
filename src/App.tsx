@@ -1,4 +1,4 @@
-import GithubLink from "./components/GithubLink/GithubLink"
+import GithubLink from "@components/GithubLink/GithubLink"
 
 function App() {
 

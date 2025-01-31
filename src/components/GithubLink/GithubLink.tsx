@@ -1,4 +1,4 @@
-import reactLogo from '@assets/GitHub-Mark-64px.png'
+import reactLogo from '@assets/logos/GitHub-Mark-64px.png'
 
 const GithubLink = () => {
     return (

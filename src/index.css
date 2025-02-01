@@ -1,5 +1,7 @@
 @import "tailwindcss";
-@plugin "daisyui";
+@plugin "daisyui" {
+    themes: bumblebee --default;
+}
 @plugin "daisyui/theme" {
     name: "bumblebee";
     default: false;
@@ -33,4 +35,12 @@
     --border: 1px;
     --depth: 1;
     --noise: 0;
+}
+
+html,
+body,
+#root {
+    height: 100%;
+    width: 100%;
+    margin: 0;
 }

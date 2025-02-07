@@ -43,4 +43,10 @@ body,
     height: 100%;
     width: 100%;
     margin: 0;
+
+    /* Style variables */
+    --navbar-height: 64px;
+    --min-app-width: 450px;
+
+    min-width: var(--min-app-width);
 }

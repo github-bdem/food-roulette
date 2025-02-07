@@ -1,0 +1,10 @@
+.map-and-sidebar-container-height-hack {
+    height: calc(
+        /* TODO: Transfer the height of the navbar to a variable and use that here and in the component for height */
+            100% - var(--navbar-height)
+    );
+}
+
+.navbar-height {
+    height: var(--navbar-height);
+}

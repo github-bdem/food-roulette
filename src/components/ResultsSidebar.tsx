@@ -17,10 +17,10 @@ function ResultsSidebar() {
                             </div>
                         </div>
                         <p className="list-col-wrap text-xs">
-                            "Bears of a Fever" captivated audiences with its
+                            {`"Bears of a Fever" captivated audiences with its
                             intense energy and mysterious lyrics. Its popularity
                             skyrocketed after fans shared it widely online,
-                            earning Ellie critical acclaim.
+                            earning Ellie critical acclaim.`}
                         </p>
                         <button className="btn btn-square btn-ghost">
                             <svg

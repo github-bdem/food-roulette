@@ -11,10 +11,28 @@ function App() {
             <APIProvider apiKey={`${import.meta.env.VITE_GMAPS_API_KEY}`}>
                 <div className="navbar bg-base-300 navbar-height flex justify-between p-4 shadow-sm">
                     <div>Food Roulette</div>
-                    <button className="btn btn-primary p-4">
-                        <FaGear />
-                        Preferences
-                    </button>
+                    <div>
+                        <div className="dropdown">
+                            <button className="btn btn-primary p-4">
+                                <FaGear />
+                                Preferences
+                            </button>
+                            <ul
+                                tabIndex={0}
+                                className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+                            >
+                                <li>
+                                    <a>Theme</a>
+                                </li>
+                                <li>
+                                    <a>Handedness</a>
+                                </li>
+                                <li>
+                                    <a>About</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
                 <div className="map-and-sidebar-container-height-hack flex h-full flex-col-reverse md:h-full md:flex-row">
                     <div className="bg-base-200 flex h-1/2 overflow-y-scroll md:h-full md:w-[450px]">

@@ -1,5 +1,10 @@
 import React, { useEffect } from "react";
-import { AdvancedMarker, Map } from "@vis.gl/react-google-maps";
+import {
+    AdvancedMarker,
+    ControlPosition,
+    Map,
+    MapControl,
+} from "@vis.gl/react-google-maps";
 
 function FoodMap() {
     // TODO: CONTINUE FROM HERE, ALSO REMEMBER: ADD A DELIVERY TOGGLE TO THE MAIN PAGE... AND NOT FUCKIN DOORDASH
@@ -28,7 +33,33 @@ function FoodMap() {
     }, []);
 
     return (
-        <Map defaultCenter={position} defaultZoom={10} mapId="DEMO_MAP_ID">
+        <Map
+            defaultCenter={position}
+            defaultZoom={10}
+            mapId="DEMO_MAP_ID"
+            zoomControlOptions={{
+                position: ControlPosition.TOP_LEFT,
+            }}
+            mapTypeControl={false}
+            fullscreenControl={false}
+            streetViewControlOptions={{
+                position: ControlPosition.TOP_LEFT,
+            }}
+            keyboardShortcuts={false}
+        >
+            <MapControl position={ControlPosition.RIGHT_CENTER}>
+                <label
+                    htmlFor="my-drawer-4"
+                    className="drawer-button btn btn-primary mr-4"
+                >
+                    Filters
+                </label>
+            </MapControl>
+            <MapControl position={ControlPosition.RIGHT_BOTTOM}>
+                <button className="btn btn-primary mr-4 mb-2 p-4">
+                    Reroll
+                </button>
+            </MapControl>
             <AdvancedMarker position={position} />
         </Map>
     );

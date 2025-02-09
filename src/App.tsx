@@ -46,41 +46,60 @@ function App() {
                     </div>
                 </APIProvider>
             </div>
-            <div className="drawer-side">
+            <div className="drawer-side lg:drawer-open">
                 <label
                     htmlFor="my-drawer-4"
                     aria-label="close sidebar"
                     className="drawer-overlay"
                 ></label>
-                <div className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
-                    <div>FILTERS</div>
-                    <div>
-                        <div>FOOD TYPE</div>
-                        <div></div>
+                <div className="menu bg-base-200 text-base-content min-h-full w-full p-4 md:w-1/2">
+                    <div className="flex flex-row">
+                        <div>FILTERS</div>
+                        <label
+                            htmlFor="my-drawer-4"
+                            className="drawer-button btn btn-primary mr-4"
+                        >
+                            Close
+                        </label>
                     </div>
                     <div>
-                        <div>DISTANCE</div>
-                        <div></div>
+                        <div>
+                            <div>FOOD TYPE</div>
+                            <div></div>
+                        </div>
+                        <div>
+                            <div>DISTANCE</div>
+                            <div></div>
+                        </div>
+                        <div>
+                            <div>PRICE RANGE</div>
+                            <div></div>
+                        </div>
+                        <div>
+                            <div>OPEN NOW</div>
+                            <div></div>
+                        </div>
+                        <div>
+                            <div>RESERVATIONS AVAILABLE</div>
+                            <div></div>
+                        </div>
+                        <div>
+                            <div>DELIVERY AVAILABLE</div>
+                            <div></div>
+                        </div>
+                        <div>
+                            <div>STAR RANGE</div>
+                            <div></div>
+                        </div>
                     </div>
-                    <div>
-                        <div>PRICE RANGE</div>
-                        <div></div>
-                    </div>
-                    <div>
-                        <div>OPEN NOW</div>
-                        <div></div>
-                    </div>
-                    <div>
-                        <div>RESERVATIONS AVAILABLE</div>
-                        <div></div>
-                    </div>
-                    <div>
-                        <div>DELIVERY AVAILABLE</div>
-                        <div></div>
-                    </div>
-                    <div>
-                        <div>STAR RANGE</div>
-                        <div></div>
+                    <div className="flex flex-row-reverse">
+                        <label
+                            htmlFor="my-drawer-4"
+                            className="drawer-button btn btn-primary mr-4"
+                            onClick={() => window.alert("blah")}
+                        >
+                            Reroll
+                        </label>
                     </div>
                 </div>
             </div>

@@ -15,7 +15,7 @@ function App() {
                         <div>Food Roulette</div>
                         <div>
                             <div className="dropdown">
-                                <button className="btn btn-primary p-4">
+                                <button className="btn btn-accent mr-12">
                                     <FaGear />
                                     Preferences
                                 </button>
@@ -24,10 +24,128 @@ function App() {
                                     className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
                                 >
                                     <li>
-                                        <a>Theme</a>
+                                        <details>
+                                            <summary>Theme</summary>
+                                            <ul>
+                                                <li>
+                                                    <label className="flex cursor-pointer items-center gap-2">
+                                                        <input
+                                                            type="radio"
+                                                            name="theme-radios"
+                                                            className="radio radio-sm theme-controller"
+                                                            value="foodie"
+                                                        />
+                                                        Default
+                                                    </label>
+                                                </li>
+                                                <li>
+                                                    <label className="flex cursor-pointer items-center gap-2">
+                                                        <input
+                                                            type="radio"
+                                                            name="theme-radios"
+                                                            className="radio radio-sm theme-controller"
+                                                            value="dark"
+                                                        />
+                                                        Dark
+                                                    </label>
+                                                </li>
+                                                <li>
+                                                    <label className="flex cursor-pointer items-center gap-2">
+                                                        <input
+                                                            type="radio"
+                                                            name="theme-radios"
+                                                            className="radio radio-sm theme-controller"
+                                                            value="light"
+                                                        />
+                                                        Light
+                                                    </label>
+                                                </li>
+                                                <li>
+                                                    <label className="flex cursor-pointer items-center gap-2">
+                                                        <input
+                                                            type="radio"
+                                                            name="theme-radios"
+                                                            className="radio radio-sm theme-controller"
+                                                            value="bumblebee"
+                                                        />
+                                                        Bumblebee
+                                                    </label>
+                                                </li>
+                                                <li>
+                                                    <label className="flex cursor-pointer items-center gap-2">
+                                                        <input
+                                                            type="radio"
+                                                            name="theme-radios"
+                                                            className="radio radio-sm theme-controller"
+                                                            value="retro"
+                                                        />
+                                                        Retro
+                                                    </label>
+                                                </li>
+                                                <li>
+                                                    <label className="flex cursor-pointer items-center gap-2">
+                                                        <input
+                                                            type="radio"
+                                                            name="theme-radios"
+                                                            className="radio radio-sm theme-controller"
+                                                            value="cyberpunk"
+                                                        />
+                                                        Cyberpunk
+                                                    </label>
+                                                </li>
+                                                <li>
+                                                    <label className="flex cursor-pointer items-center gap-2">
+                                                        <input
+                                                            type="radio"
+                                                            name="theme-radios"
+                                                            className="radio radio-sm theme-controller"
+                                                            value="pastel"
+                                                        />
+                                                        Pastel
+                                                    </label>
+                                                </li>
+                                                <li>
+                                                    <label className="flex cursor-pointer items-center gap-2">
+                                                        <input
+                                                            type="radio"
+                                                            name="theme-radios"
+                                                            className="radio radio-sm theme-controller"
+                                                            value="cmyk"
+                                                        />
+                                                        CMYK
+                                                    </label>
+                                                </li>
+                                            </ul>
+                                        </details>
                                     </li>
                                     <li>
-                                        <a>Handedness</a>
+                                        <details>
+                                            <summary>Handedness</summary>
+                                            <ul>
+                                                <li>
+                                                    <label className="flex cursor-pointer items-center gap-2">
+                                                        <input
+                                                            type="radio"
+                                                            name="handedness-radios"
+                                                            className="radio radio-sm"
+                                                            value="right"
+                                                        />
+                                                        Right
+                                                    </label>
+                                                </li>
+                                                <li>
+                                                    <label className="flex cursor-pointer items-center gap-2">
+                                                        <input
+                                                            type="radio"
+                                                            name="handedness-radios"
+                                                            className="radio radio-sm"
+                                                            value="left"
+                                                        />
+                                                        Left
+                                                    </label>
+                                                </li>
+                                            </ul>
+                                        </details>
                                     </li>
                                     <li>
                                         <a>About</a>
@@ -37,7 +155,7 @@ function App() {
                         </div>
                     </div>
                     <div className="map-and-sidebar-container-height-hack flex h-full flex-col-reverse md:h-full md:flex-row">
-                        <div className="bg-base-200 flex h-1/2 overflow-y-scroll md:h-full md:w-[450px]">
+                        <div className="bg-base-200 flex h-1/2 w-full overflow-y-scroll md:h-full">
                             <ResultsSidebar />
                         </div>
                         <div className="flex h-1/2 flex-col items-center justify-center md:h-full md:w-full">
@@ -54,10 +172,10 @@ function App() {
                 ></label>
                 <div className="bg-base-200 text-base-content h-full w-full md:w-[450px]">
                     <div className="navbar bg-base-300 navbar-height flex justify-between p-4 shadow-sm">
-                        <div>FILTERS</div>
+                        <div>Filters</div>
                         <label
                             htmlFor="my-drawer-4"
-                            className="drawer-button btn btn-primary mr-4"
+                            className="drawer-button btn mr-4"
                         >
                             Close
                         </label>

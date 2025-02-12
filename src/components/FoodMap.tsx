@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import {
     AdvancedMarker,
     ControlPosition,
@@ -7,7 +7,6 @@ import {
 } from "@vis.gl/react-google-maps";
 
 function FoodMap() {
-    // TODO: CONTINUE FROM HERE, ALSO REMEMBER: ADD A DELIVERY TOGGLE TO THE MAIN PAGE... AND NOT FUCKIN DOORDASH
     // https://react.dev/learn/scaling-up-with-reducer-and-context
     const position = { lat: 53.54992, lng: 10.00678 };
     useEffect(() => {
@@ -50,7 +49,7 @@ function FoodMap() {
             <MapControl position={ControlPosition.RIGHT_CENTER}>
                 <label
                     htmlFor="my-drawer-4"
-                    className="drawer-button btn btn-primary mr-4"
+                    className="drawer-button btn btn-secondary mr-4"
                 >
                     Filters
                 </label>

@@ -1,40 +1,48 @@
 @import "tailwindcss";
 @plugin "daisyui" {
-    themes: bumblebee --default;
+    themes:
+        foodie --default,
+        light,
+        dark,
+        bumblebee,
+        retro,
+        cyberpunk,
+        pastel,
+        cmyk;
 }
 @plugin "daisyui/theme" {
-    name: "bumblebee";
-    default: false;
+    name: "foodie";
+    default: true;
     prefersdark: false;
     color-scheme: "light";
-    --color-base-100: oklch(100% 0 0);
-    --color-base-200: oklch(97% 0 0);
-    --color-base-300: oklch(92% 0 0);
-    --color-base-content: oklch(20% 0 0);
-    --color-primary: oklch(85% 0.199 91.936);
-    --color-primary-content: oklch(42% 0.095 57.708);
-    --color-secondary: oklch(75% 0.183 55.934);
-    --color-secondary-content: oklch(40% 0.123 38.172);
-    --color-accent: oklch(0% 0 0);
-    --color-accent-content: oklch(100% 0 0);
-    --color-neutral: oklch(37% 0.01 67.558);
-    --color-neutral-content: oklch(92% 0.003 48.717);
+    --color-base-100: oklch(98% 0.003 247.858);
+    --color-base-200: oklch(96% 0.007 247.896);
+    --color-base-300: oklch(92% 0.013 255.508);
+    --color-base-content: oklch(20% 0.042 265.755);
+    --color-primary: oklch(84% 0.143 164.978);
+    --color-primary-content: oklch(26% 0.051 172.552);
+    --color-secondary: oklch(80% 0.114 19.571);
+    --color-secondary-content: oklch(25% 0.092 26.042);
+    --color-accent: oklch(81% 0.111 293.571);
+    --color-accent-content: oklch(28% 0.141 291.089);
+    --color-neutral: oklch(27% 0.041 260.031);
+    --color-neutral-content: oklch(98% 0.003 247.858);
     --color-info: oklch(74% 0.16 232.661);
-    --color-info-content: oklch(39% 0.09 240.876);
-    --color-success: oklch(76% 0.177 163.223);
-    --color-success-content: oklch(37% 0.077 168.94);
-    --color-warning: oklch(82% 0.189 84.429);
-    --color-warning-content: oklch(41% 0.112 45.904);
-    --color-error: oklch(70% 0.191 22.216);
-    --color-error-content: oklch(39% 0.141 25.723);
-    --radius-selector: 1rem;
-    --radius-field: 0.5rem;
-    --radius-box: 1rem;
+    --color-info-content: oklch(29% 0.066 243.157);
+    --color-success: oklch(79% 0.209 151.711);
+    --color-success-content: oklch(26% 0.065 152.934);
+    --color-warning: oklch(85% 0.199 91.936);
+    --color-warning-content: oklch(28% 0.066 53.813);
+    --color-error: oklch(71% 0.194 13.428);
+    --color-error-content: oklch(27% 0.105 12.094);
+    --radius-selector: 0.25rem;
+    --radius-field: 0.25rem;
+    --radius-box: 0.25rem;
     --size-selector: 0.25rem;
     --size-field: 0.25rem;
-    --border: 1px;
+    --border: 1.5px;
     --depth: 1;
-    --noise: 0;
+    --noise: 1;
 }
 
 html,
@@ -43,4 +51,10 @@ body,
     height: 100%;
     width: 100%;
     margin: 0;
+
+    /* Style variables */
+    --navbar-height: 64px;
+    --min-app-width: 450px;
+
+    min-width: var(--min-app-width);
 }

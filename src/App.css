@@ -5,3 +5,7 @@
 .navbar-height {
     height: var(--navbar-height);
 }
+
+.filter-sidebar-height {
+    height: calc(100% - calc(2 * var(--navbar-height)));
+}

@@ -19,6 +19,7 @@ function App() {
                 <div className="drawer-content flex size-full flex-col">
                     <APIProvider
                         apiKey={`${import.meta.env.VITE_GMAPS_API_KEY}`}
+                        region="US"
                     >
                         <div className="navbar bg-primary navbar-height flex justify-between p-4 shadow-sm">
                             <div>Food Roulette</div>

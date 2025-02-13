@@ -6,41 +6,44 @@ interface latLngPosition {
 }
 
 interface State {
-    mapCenter?: latLngPosition;
+    center?: latLngPosition;
     zoom?: number;
+    lastUpdatedZoom?: number;
+    lastUpdatedCenter?: latLngPosition;
 }
 
 enum FoodMapAction {
-    SET_MAP_CENTER = "SET_MAP_CENTER",
-    SET_ZOOM_LEVEL = "SET_ZOOM_LEVEL",
     SET_MAP_CAMERA_VALUES = "SET_MAP_CAMERA_VALUES",
+    SET_LAST_UPDATED_MAP_CAMERA_VALUES = "SET_LAST_UPDATED_MAP_CAMERA_VALUES",
 }
 
 interface Action {
     type:
-        | FoodMapAction.SET_MAP_CENTER
-        | FoodMapAction.SET_ZOOM_LEVEL
-        | FoodMapAction.SET_MAP_CAMERA_VALUES;
-    payload: { mapCenter?: latLngPosition; zoom?: number };
+        | FoodMapAction.SET_MAP_CAMERA_VALUES
+        | FoodMapAction.SET_LAST_UPDATED_MAP_CAMERA_VALUES;
+    payload: {
+        center?: latLngPosition;
+        zoom?: number;
+        lastUpdatedZoom?: number;
+        lastUpdatedCenter?: latLngPosition;
+    };
 }
 
 const foodMapReducer = (state: State, action: Action): State => {
     switch (action.type) {
-        case FoodMapAction.SET_MAP_CENTER:
-            return {
-                ...state,
-                mapCenter: action.payload.mapCenter,
-            };
-        case FoodMapAction.SET_ZOOM_LEVEL:
-            return {
-                ...state,
-                zoom: action.payload.zoom,
-            };
         case FoodMapAction.SET_MAP_CAMERA_VALUES:
             return {
                 ...state,
-                mapCenter: action.payload.mapCenter,
-                zoom: action.payload.zoom,
+                center: action.payload.center ?? state.center,
+                zoom: action.payload.zoom ?? state.zoom,
+            };
+        case FoodMapAction.SET_LAST_UPDATED_MAP_CAMERA_VALUES:
+            return {
+                ...state,
+                lastUpdatedZoom:
+                    action.payload.lastUpdatedZoom ?? state.lastUpdatedZoom,
+                lastUpdatedCenter:
+                    action.payload.lastUpdatedCenter ?? state.lastUpdatedCenter,
             };
         default:
             return state;
@@ -52,9 +55,12 @@ interface ContextProps {
     dispatch: React.Dispatch<Action>;
 }
 
+const initialZoom = 17;
+const initialCenter = { lat: 37.7749, lng: -122.4194 };
+
 const initialFoodMapState = {
-    mapCenter: { lat: 37.7749, lng: -122.4194 },
-    zoom: 17,
+    center: initialCenter,
+    zoom: initialZoom,
 };
 
 const FoodMapContext = React.createContext<ContextProps>({} as ContextProps);
@@ -75,6 +81,7 @@ export {
     initialFoodMapState,
     useFoodMapContext,
     FoodMapAction,
+    initialZoom,
 };
 
 export type { latLngPosition };

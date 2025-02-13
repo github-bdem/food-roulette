@@ -81,17 +81,27 @@ function FoodMap() {
         return deg * (Math.PI / 180);
     };
 
-    const shouldFetchNewPizzaLocations = ({
+    const shouldFetchNewFoodLocations = ({
         newCenter,
         newZoom,
     }: ShouldFetchNewPizzaLocationsProps) => {
         const initialFetchCheck = !lastUpdatedCenter && !lastUpdatedZoom;
         if (initialFetchCheck) {
+            /**
+             * Initial page load, last updated is undefined, thus we want to fetch
+             * new locations
+             */
             return true;
         }
         const hasAllDimensions =
             lastUpdatedCenter && lastUpdatedZoom && newCenter && newZoom;
         if (hasAllDimensions) {
+            /**
+             * All dimensions are available, we can compare the distances
+             * between center and zoom level.  If either difference exceed
+             *  our epsilons then we want to fetch new locations
+             */
+
             const lat1 = lastUpdatedCenter.lat;
             const lng1 = lastUpdatedCenter.lng;
 
@@ -116,21 +126,19 @@ function FoodMap() {
                 Math.abs(newZoom - lastUpdatedZoom) >=
                 minimumZoomLevelDeltaToTriggerUpdate;
 
-            if (centerDeltaTrigger || zoomDeltaTrigger) {
-                return true;
-            } else {
-                return false;
-            }
+            return centerDeltaTrigger || zoomDeltaTrigger;
         } else {
+            /**
+             * Error state, lets save some money and not make api requests
+             */
+            console.error("Map center or zoom storage error");
             return false;
         }
     };
 
     const handleCameraChange = (ev: MapCameraChangedEvent) => {
         const { center, zoom } = ev.detail;
-        if (
-            shouldFetchNewPizzaLocations({ newCenter: center, newZoom: zoom })
-        ) {
+        if (shouldFetchNewFoodLocations({ newCenter: center, newZoom: zoom })) {
             fetchFoodLocations({ newCenter: center, newZoom: zoom });
         }
         dispatch({

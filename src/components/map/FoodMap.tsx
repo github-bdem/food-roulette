@@ -152,7 +152,7 @@ function FoodMap() {
             center={center}
             zoom={zoom}
             onCameraChanged={handleCameraChange}
-            mapId="DEMO_MAP_ID"
+            mapId="DEMO_MAP_ID" //TODO: REPLACE BEFORE DEPLOY
             zoomControlOptions={{
                 position: ControlPosition.TOP_LEFT,
             }}
@@ -162,6 +162,22 @@ function FoodMap() {
                 position: ControlPosition.TOP_LEFT,
             }}
             keyboardShortcuts={false}
+            clickableIcons={false}
+            styles={[
+                // TODO: This does not seem to work??
+                // might need to manually set styles if this library is busted:
+                // https://github.com/Pham-Vincent/Equitable-Water-Solutions/issues/76
+                // https://developers.google.com/maps/documentation/javascript/examples/hiding-features#maps_hiding_features-javascript
+                {
+                    featureType: "poi.business",
+                    stylers: [{ visibility: "off" }],
+                },
+                {
+                    featureType: "transit",
+                    elementType: "labels.icon",
+                    stylers: [{ visibility: "off" }],
+                },
+            ]}
         >
             <MapControl position={ControlPosition.RIGHT_CENTER}>
                 <label

@@ -4,6 +4,7 @@ import {
     Map,
     MapCameraChangedEvent,
     MapControl,
+    MapEvent,
     useMap,
     useMapsLibrary,
 } from "@vis.gl/react-google-maps";
@@ -12,6 +13,8 @@ import {
     useFoodMapContext,
     latLngPosition,
 } from "./FoodMapContext";
+import computeDistanceBetweenLatLng from "./ComputeDistanceBetweenLatLng";
+import convertGmapsLatLngToLatLng from "./ConvertGmapsLatLngToLatLng";
 
 const minimumCenterDeltaToTriggerUpdate = 1; // Delta is expressed in km
 const minimumZoomLevelDeltaToTriggerUpdate = 1;
@@ -67,18 +70,47 @@ function FoodMap() {
         );
     }, [dispatch]);
 
+    const handleNewFoodLocationsResponse = (
+        placeSearchResults: google.maps.places.PlaceResult[] | null,
+        placesServiceStatus: google.maps.places.PlacesServiceStatus,
+        // placeSearchPagination: google.maps.places.PlaceSearchPagination | null, // will be used to reroll
+    ) => {
+        if (
+            placesServiceStatus === google.maps.places.PlacesServiceStatus.OK &&
+            placeSearchResults !== null
+        ) {
+            dispatch({
+                type: FoodMapAction.SET_FOOD_LOCATIONS,
+                payload: { foodLocations: placeSearchResults },
+            });
+        }
+    };
+
     const fetchFoodLocations = ({
         newCenter,
         newZoom,
     }: FetchFoodLocationsProps) => {
-        dispatch({
-            type: FoodMapAction.SET_LAST_UPDATED_MAP_CAMERA_VALUES,
-            payload: { lastUpdatedCenter: newCenter, lastUpdatedZoom: newZoom },
-        });
-    };
+        console.log("fetching food locations");
+        if (placesService) {
+            const request = {
+                location: center,
+                radius: 1500,
+                type: "restaurant",
+                // keyword: "pizza",
+                // maxPriceLevel,
+                // minPriceLevel,
+                // openNow,
+            };
+            placesService.nearbySearch(request, handleNewFoodLocationsResponse);
 
-    const convertDegreesToRadians = (deg: number) => {
-        return deg * (Math.PI / 180);
+            dispatch({
+                type: FoodMapAction.SET_LAST_UPDATED_MAP_CAMERA_VALUES,
+                payload: {
+                    lastUpdatedCenter: newCenter,
+                    lastUpdatedZoom: newZoom,
+                },
+            });
+        }
     };
 
     const shouldFetchNewFoodLocations = ({
@@ -102,25 +134,13 @@ function FoodMap() {
              *  our epsilons then we want to fetch new locations
              */
 
-            const lat1 = lastUpdatedCenter.lat;
-            const lng1 = lastUpdatedCenter.lng;
+            const distanceBetweenLatLng = computeDistanceBetweenLatLng(
+                lastUpdatedCenter,
+                newCenter,
+            );
 
-            const lat2 = newCenter.lat;
-            const lng2 = newCenter.lng;
-
-            const radiusOfEarth = 6371;
-            const latitudinalDistance = convertDegreesToRadians(lat2 - lat1);
-            const longitudinalDistance = convertDegreesToRadians(lng2 - lng1);
-            const a =
-                Math.sin(latitudinalDistance / 2) *
-                    Math.sin(latitudinalDistance / 2) +
-                Math.cos(convertDegreesToRadians(lat1)) *
-                    Math.cos(convertDegreesToRadians(lat2)) *
-                    Math.sin(longitudinalDistance / 2) *
-                    Math.sin(longitudinalDistance / 2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
             const centerDeltaTrigger =
-                radiusOfEarth * c >= minimumCenterDeltaToTriggerUpdate;
+                distanceBetweenLatLng >= minimumCenterDeltaToTriggerUpdate;
 
             const zoomDeltaTrigger =
                 Math.abs(newZoom - lastUpdatedZoom) >=
@@ -138,13 +158,31 @@ function FoodMap() {
 
     const handleCameraChange = (ev: MapCameraChangedEvent) => {
         const { center, zoom } = ev.detail;
-        if (shouldFetchNewFoodLocations({ newCenter: center, newZoom: zoom })) {
-            fetchFoodLocations({ newCenter: center, newZoom: zoom });
-        }
         dispatch({
             type: FoodMapAction.SET_MAP_CAMERA_VALUES,
             payload: { center, zoom },
         });
+    };
+
+    const onTilesLoaded = (ev: MapEvent) => {
+        const gmapCenter = ev.map.getCenter();
+        const gmapZoom = ev.map.getZoom();
+
+        if (gmapCenter && gmapZoom) {
+            const center = convertGmapsLatLngToLatLng(gmapCenter);
+            const zoom = gmapZoom;
+
+            if (center && zoom) {
+                if (
+                    shouldFetchNewFoodLocations({
+                        newCenter: center,
+                        newZoom: zoom,
+                    })
+                ) {
+                    fetchFoodLocations({ newCenter: center, newZoom: zoom });
+                }
+            }
+        }
     };
 
     return (
@@ -152,6 +190,7 @@ function FoodMap() {
             center={center}
             zoom={zoom}
             onCameraChanged={handleCameraChange}
+            onTilesLoaded={onTilesLoaded}
             mapId="DEMO_MAP_ID" //TODO: REPLACE BEFORE DEPLOY
             zoomControlOptions={{
                 position: ControlPosition.TOP_LEFT,

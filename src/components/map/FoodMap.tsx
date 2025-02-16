@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import {
+    AdvancedMarker,
     ControlPosition,
     Map,
     MapCameraChangedEvent,
     MapControl,
     MapEvent,
+    Pin,
     useMap,
     useMapsLibrary,
 } from "@vis.gl/react-google-maps";
@@ -32,7 +34,8 @@ interface FetchFoodLocationsProps {
 function FoodMap() {
     const { state, dispatch } = useFoodMapContext();
 
-    const { center, zoom, lastUpdatedCenter, lastUpdatedZoom } = state;
+    const { center, zoom, lastUpdatedCenter, lastUpdatedZoom, foodLocations } =
+        state;
 
     const map = useMap();
     const placesLib = useMapsLibrary("places");
@@ -231,6 +234,28 @@ function FoodMap() {
                     Reroll
                 </button>
             </MapControl>
+            {foodLocations?.map((location) => {
+                if (location?.geometry?.location) {
+                    const convertedLocationCenter = convertGmapsLatLngToLatLng(
+                        location.geometry.location,
+                    );
+                    return (
+                        <AdvancedMarker
+                            key={location.place_id}
+                            position={convertedLocationCenter}
+                        ></AdvancedMarker>
+                    );
+                } else {
+                    return null;
+                }
+            })}
+            <AdvancedMarker position={center}>
+                <Pin
+                    background={"#0f9d58"}
+                    borderColor={"#006425"}
+                    glyphColor={"#60d98f"}
+                />
+            </AdvancedMarker>
         </Map>
     );
 }

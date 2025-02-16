@@ -12,31 +12,31 @@ function ResultsCard({ location }: ResultsCardProps) {
 
     // ANYTHING THAT LISTS NEEDING A GET DETAILS REQUEST NEEDS TO BE HIDDEN UNDER THE MORE DROPDOWN
     const {
-        address_components,
-        adr_address,
-        aspects,
-        business_status,
+        // address_components,
+        // adr_address,
+        // aspects,
+        // business_status,
         formatted_address,
         formatted_phone_number,
         geometry,
-        html_attributions,
-        icon,
-        icon_background_color,
-        icon_mask_base_uri,
-        international_phone_number,
+        // html_attributions,
+        // icon,
+        // icon_background_color,
+        // icon_mask_base_uri,
+        // international_phone_number,
         name,
         opening_hours,
         photos,
-        place_id,
-        plus_code,
+        // place_id,
+        // plus_code,
         price_level,
         rating,
-        reviews,
-        types,
+        // reviews,
+        // types,
         url,
         user_ratings_total,
-        utc_offset_minutes,
-        vicinity,
+        // utc_offset_minutes,
+        // vicinity,
         website,
     } = location;
 
@@ -76,15 +76,22 @@ function ResultsCard({ location }: ResultsCardProps) {
                     <div className="stat">
                         <div className="stat-title">Rating</div>
                         <div className="stat-value">{rating}/5</div>
-                    </div>
 
-                    {user_ratings_total ? (
-                        <div className="stat">
-                            <div className="stat-title">Reviews</div>
-                            <div className="stat-value">
+                        {user_ratings_total ? (
+                            <div className="stat-desc">
                                 {new Intl.NumberFormat("en-US").format(
                                     user_ratings_total,
-                                )}
+                                )}{" "}
+                                reviews
+                            </div>
+                        ) : null}
+                    </div>
+
+                    {price_level ? (
+                        <div className="stat">
+                            <div className="stat-title">Price</div>
+                            <div className="stat-value">
+                                <div className="rating">{price_level}/4</div>
                             </div>
                         </div>
                     ) : null}

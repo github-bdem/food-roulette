@@ -21,7 +21,7 @@ function UpdateOnMoveToggle() {
                 <input
                     type="checkbox"
                     checked={updateOnMapMove}
-                    onClick={toggleUpdateOnMapMove}
+                    onChange={toggleUpdateOnMapMove}
                     className="toggle"
                 />
             </label>

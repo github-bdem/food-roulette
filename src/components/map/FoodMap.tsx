@@ -32,7 +32,9 @@ interface FetchFoodLocationsProps {
 }
 
 function FoodMap() {
-    const { state, dispatch } = useFoodMapContext();
+    const foodMapContext = useFoodMapContext();
+    const foodMapState = foodMapContext.state;
+    const foodMapDispatch = foodMapContext.dispatch;
 
     const {
         center,
@@ -41,7 +43,7 @@ function FoodMap() {
         lastUpdatedZoom,
         foodLocations,
         updateOnMapMove,
-    } = state;
+    } = foodMapState;
 
     const map = useMap();
     const placesLib = useMapsLibrary("places");
@@ -67,7 +69,7 @@ function FoodMap() {
                 lat: pos.coords.latitude,
                 lng: pos.coords.longitude,
             } as latLngPosition;
-            dispatch({
+            foodMapDispatch({
                 type: FoodMapAction.SET_MAP_CAMERA_VALUES,
                 payload: { center },
             });
@@ -77,7 +79,7 @@ function FoodMap() {
             () => null,
             geolocationOptions,
         );
-    }, [dispatch]);
+    }, [foodMapDispatch]);
 
     const handleNewFoodLocationsResponse = (
         placeSearchResults: google.maps.places.PlaceResult[] | null,
@@ -88,7 +90,7 @@ function FoodMap() {
             placesServiceStatus === google.maps.places.PlacesServiceStatus.OK &&
             placeSearchResults !== null
         ) {
-            dispatch({
+            foodMapDispatch({
                 type: FoodMapAction.SET_FOOD_LOCATIONS,
                 payload: { foodLocations: placeSearchResults },
             });
@@ -113,7 +115,7 @@ function FoodMap() {
             placesService.nearbySearch(request, handleNewFoodLocationsResponse);
             console.log("making request", request);
 
-            dispatch({
+            foodMapDispatch({
                 type: FoodMapAction.SET_LAST_UPDATED_MAP_CAMERA_VALUES,
                 payload: {
                     lastUpdatedCenter: newCenter,
@@ -168,7 +170,7 @@ function FoodMap() {
 
     const handleCameraChange = (ev: MapCameraChangedEvent) => {
         const { center, zoom } = ev.detail;
-        dispatch({
+        foodMapDispatch({
             type: FoodMapAction.SET_MAP_CAMERA_VALUES,
             payload: { center, zoom },
         });

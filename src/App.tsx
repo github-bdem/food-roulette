@@ -3,9 +3,10 @@ import { APIProvider } from "@vis.gl/react-google-maps";
 import ResultsSidebar from "@components/results/ResultsSidebar";
 import FilterSidebar from "src/components/filters/FilterSidebar";
 import PreferencesMenu from "./components/preferencesMenu/PreferencesMenu";
+import FoodMapProvider from "./components/map/FoodMapContextProvider";
+import UpdateOnMoveToggle from "./components/updateOnMoveToggle/updateOnMoveToggle";
 
 import "./App.css";
-import FoodMapProvider from "./components/map/FoodMapContextProvider";
 
 function App() {
     return (
@@ -23,7 +24,10 @@ function App() {
                     >
                         <div className="navbar bg-primary navbar-height flex justify-between p-4 shadow-sm">
                             <div>Food Roulette</div>
-                            <PreferencesMenu />
+                            <div className="flex flex-row gap-4">
+                                <UpdateOnMoveToggle />
+                                <PreferencesMenu />
+                            </div>
                         </div>
                         <div className="map-and-sidebar-container-height-hack flex h-full flex-col-reverse md:h-full md:flex-row">
                             <div className="bg-base-200 flex h-2/3 overflow-y-scroll md:h-full md:w-[600px]">

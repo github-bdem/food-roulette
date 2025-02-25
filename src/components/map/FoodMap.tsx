@@ -18,8 +18,8 @@ import {
 import computeDistanceBetweenLatLng from "./ComputeDistanceBetweenLatLng";
 import convertGmapsLatLngToLatLng from "./ConvertGmapsLatLngToLatLng";
 
-const minimumCenterDeltaToTriggerUpdate = 1; // Delta is expressed in km
-const minimumZoomLevelDeltaToTriggerUpdate = 1;
+const minimumCenterDeltaToTriggerUpdate = 2; // Delta is expressed in km
+const minimumZoomLevelDeltaToTriggerUpdate = 2;
 
 interface ShouldFetchNewPizzaLocationsProps {
     newCenter: latLngPosition;
@@ -34,8 +34,14 @@ interface FetchFoodLocationsProps {
 function FoodMap() {
     const { state, dispatch } = useFoodMapContext();
 
-    const { center, zoom, lastUpdatedCenter, lastUpdatedZoom, foodLocations } =
-        state;
+    const {
+        center,
+        zoom,
+        lastUpdatedCenter,
+        lastUpdatedZoom,
+        foodLocations,
+        updateOnMapMove,
+    } = state;
 
     const map = useMap();
     const placesLib = useMapsLibrary("places");
@@ -105,6 +111,7 @@ function FoodMap() {
                 // openNow,
             };
             placesService.nearbySearch(request, handleNewFoodLocationsResponse);
+            console.log("making request", request);
 
             dispatch({
                 type: FoodMapAction.SET_LAST_UPDATED_MAP_CAMERA_VALUES,
@@ -149,7 +156,7 @@ function FoodMap() {
                 Math.abs(newZoom - lastUpdatedZoom) >=
                 minimumZoomLevelDeltaToTriggerUpdate;
 
-            return centerDeltaTrigger || zoomDeltaTrigger;
+            return updateOnMapMove && (centerDeltaTrigger || zoomDeltaTrigger);
         } else {
             /**
              * Error state, lets save some money and not make api requests

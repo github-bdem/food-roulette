@@ -1,13 +1,13 @@
-import { FoodMapAction, useFoodMapContext } from "../map/FoodMapContext";
+import { FilterAction, useFilterContext } from "../filters/FiltersContext";
 
 function UpdateOnMoveToggle() {
-    const { state, dispatch } = useFoodMapContext();
+    const { state, dispatch } = useFilterContext();
 
     const { updateOnMapMove } = state;
 
     const toggleUpdateOnMapMove = () => {
         dispatch({
-            type: FoodMapAction.SET_UPDATE_ON_MAP_MOVE,
+            type: FilterAction.SET_UPDATE_ON_MAP_MOVE,
             payload: {
                 updateOnMapMove: !updateOnMapMove,
             },

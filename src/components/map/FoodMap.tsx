@@ -17,6 +17,7 @@ import {
 } from "./FoodMapContext";
 import computeDistanceBetweenLatLng from "./ComputeDistanceBetweenLatLng";
 import convertGmapsLatLngToLatLng from "./ConvertGmapsLatLngToLatLng";
+import { useFilterContext } from "../filters/FiltersContext";
 
 const minimumCenterDeltaToTriggerUpdate = 2; // Delta is expressed in km
 const minimumZoomLevelDeltaToTriggerUpdate = 2;
@@ -36,14 +37,13 @@ function FoodMap() {
     const foodMapState = foodMapContext.state;
     const foodMapDispatch = foodMapContext.dispatch;
 
-    const {
-        center,
-        zoom,
-        lastUpdatedCenter,
-        lastUpdatedZoom,
-        foodLocations,
-        updateOnMapMove,
-    } = foodMapState;
+    const { center, zoom, lastUpdatedCenter, lastUpdatedZoom, foodLocations } =
+        foodMapState;
+
+    const filterContext = useFilterContext();
+    const filterState = filterContext.state;
+
+    const { updateOnMapMove } = filterState;
 
     const map = useMap();
     const placesLib = useMapsLibrary("places");
@@ -112,7 +112,7 @@ function FoodMap() {
                 // minPriceLevel,
                 // openNow,
             };
-            placesService.nearbySearch(request, handleNewFoodLocationsResponse);
+            // placesService.nearbySearch(request, handleNewFoodLocationsResponse);
             console.log("making request", request);
 
             foodMapDispatch({

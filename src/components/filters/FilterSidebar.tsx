@@ -1,5 +1,5 @@
 import AdditionalFilters from "./AdditionalFilters";
-import FoodTypeFilter from "./FoodTypeFilter";
+import FoodTypeFilters from "./FoodTypeFilters";
 import MaxDistanceFilter from "./MaxDistanceFilter";
 import PriceRangeFilter from "./PriceRange";
 import RatingFilter from "./RatingFilter";
@@ -17,7 +17,7 @@ function FilterSidebar() {
                 </label>
             </div>
             <div className="filter-sidebar-height flex h-5 w-full flex-col items-center gap-4 overflow-scroll p-4">
-                <FoodTypeFilter />
+                <FoodTypeFilters />
                 <MaxDistanceFilter />
                 <AdditionalFilters />
                 <RatingFilter />

@@ -1,4 +1,4 @@
-function FoodTypeFilter() {
+function FoodTypeFilters() {
     return (
         <fieldset className="fieldset bg-base-100 border-base-300 rounded-box w-5/6 border p-4">
             <legend className="fieldset-legend">Food Type</legend>
@@ -50,4 +50,4 @@ function FoodTypeFilter() {
     );
 }
 
-export default FoodTypeFilter;
+export default FoodTypeFilters;

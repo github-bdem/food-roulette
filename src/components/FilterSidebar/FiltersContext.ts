@@ -17,6 +17,7 @@ interface State {
     updateOnMapMove: boolean;
     foodTypeFilters: GmapsFoodTypeFilter[];
     includeOpenNow: boolean;
+    maxDistancePercent: number;
 }
 
 enum FilterAction {
@@ -24,6 +25,7 @@ enum FilterAction {
     ADD_FOOD_TYPE_FILTER = "ADD_FOOD_TYPE_FILTER",
     REMOVE_FOOD_TYPE_FILTER = "REMOVE_FOOD_TYPE_FILTER",
     SET_INCLUDE_OPEN_NOW = "SET_INCLUDE_OPEN_NOW",
+    SET_MAX_DISTANCE_PERCENT = "SET_MAX_DISTANCE_PERCENT",
 }
 
 interface Action {
@@ -31,13 +33,15 @@ interface Action {
         | FilterAction.SET_UPDATE_ON_MAP_MOVE
         | FilterAction.ADD_FOOD_TYPE_FILTER
         | FilterAction.REMOVE_FOOD_TYPE_FILTER
-        | FilterAction.SET_INCLUDE_OPEN_NOW;
+        | FilterAction.SET_INCLUDE_OPEN_NOW
+        | FilterAction.SET_MAX_DISTANCE_PERCENT;
     payload: {
         updateOnMapMove?: boolean;
         foodTypeFilters?: GmapsFoodTypeFilter[];
         foodTypeFilterToAdd?: GmapsFoodTypeFilter;
         foodTypeFilterToRemove?: GmapsFoodTypeFilter;
         includeOpenNow?: boolean;
+        maxDistancePercent?: number;
     };
 }
 
@@ -80,6 +84,14 @@ const filterReducer = (state: State, action: Action): State => {
                     action.payload.includeOpenNow ?? state.includeOpenNow,
             };
         }
+        case FilterAction.SET_MAX_DISTANCE_PERCENT: {
+            return {
+                ...state,
+                maxDistancePercent:
+                    action.payload.maxDistancePercent ??
+                    state.maxDistancePercent,
+            };
+        }
         default:
             return state;
     }
@@ -94,6 +106,7 @@ const initialFilterState = {
     updateOnMapMove: false,
     foodTypeFilters: [],
     includeOpenNow: false,
+    maxDistancePercent: 25,
 };
 
 const FilterContext = React.createContext<ContextProps>({} as ContextProps);

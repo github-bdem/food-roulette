@@ -50,6 +50,14 @@ const useFilterContextInteractions = () => {
                     },
                 });
             },
+            setMaxDistancePercent: (maxDistancePercent: number) => {
+                dispatch({
+                    type: FilterAction.SET_MAX_DISTANCE_PERCENT,
+                    payload: {
+                        maxDistancePercent,
+                    },
+                });
+            },
         }),
         [state, dispatch],
     );

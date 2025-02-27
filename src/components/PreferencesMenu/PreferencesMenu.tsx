@@ -5,7 +5,6 @@ function PreferencesMenu() {
         <div className="dropdown dropdown-end">
             <button className="btn btn-accent mr-2">
                 <FaGear />
-                Preferences
             </button>
             <ul
                 tabIndex={0}

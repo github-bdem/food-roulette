@@ -1,18 +1,12 @@
-import { FilterAction, useFilterContext } from "../filters/FiltersContext";
+import useFilterContextInteractions from "../filters/FilterContextInteractions";
+import { useFilterContext } from "../filters/FiltersContext";
 
 function UpdateOnMoveToggle() {
-    const { state, dispatch } = useFilterContext();
+    const { state } = useFilterContext();
 
     const { updateOnMapMove } = state;
 
-    const toggleUpdateOnMapMove = () => {
-        dispatch({
-            type: FilterAction.SET_UPDATE_ON_MAP_MOVE,
-            payload: {
-                updateOnMapMove: !updateOnMapMove,
-            },
-        });
-    };
+    const { toggleUpdateOnMapMove } = useFilterContextInteractions();
 
     return (
         <fieldset className="fieldset flex">

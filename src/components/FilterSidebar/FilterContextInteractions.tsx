@@ -58,6 +58,36 @@ const useFilterContextInteractions = () => {
                     },
                 });
             },
+            setIncludeReservationsAvailable: (
+                includeReservationsAvailable: boolean,
+            ) => {
+                dispatch({
+                    type: FilterAction.SET_INCLUDE_RESERVATIONS_AVAILABLE,
+                    payload: {
+                        includeReservationsAvailable,
+                    },
+                });
+            },
+            setIncludeTakeawayAvailable: (
+                includeTakeawayAvailable: boolean,
+            ) => {
+                dispatch({
+                    type: FilterAction.SET_INCLUDE_TAKEAWAY_AVAILABLE,
+                    payload: {
+                        includeTakeawayAvailable,
+                    },
+                });
+            },
+            setIncludeDeliveryAvailable: (
+                includeDeliveryAvailable: boolean,
+            ) => {
+                dispatch({
+                    type: FilterAction.SET_INCLUDE_DELIVERY_AVAILABLE,
+                    payload: {
+                        includeDeliveryAvailable,
+                    },
+                });
+            },
         }),
         [state, dispatch],
     );

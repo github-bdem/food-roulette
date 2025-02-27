@@ -18,6 +18,9 @@ interface State {
     foodTypeFilters: GmapsFoodTypeFilter[];
     includeOpenNow: boolean;
     maxDistancePercent: number;
+    includeReservationsAvailable: boolean;
+    includeDeliveryAvailable: boolean;
+    includeTakeawayAvailable: boolean;
 }
 
 enum FilterAction {
@@ -26,6 +29,9 @@ enum FilterAction {
     REMOVE_FOOD_TYPE_FILTER = "REMOVE_FOOD_TYPE_FILTER",
     SET_INCLUDE_OPEN_NOW = "SET_INCLUDE_OPEN_NOW",
     SET_MAX_DISTANCE_PERCENT = "SET_MAX_DISTANCE_PERCENT",
+    SET_INCLUDE_RESERVATIONS_AVAILABLE = "SET_INCLUDE_RESERVATIONS_AVAILABLE",
+    SET_INCLUDE_DELIVERY_AVAILABLE = "SET_INCLUDE_DELIVERY_AVAILABLE",
+    SET_INCLUDE_TAKEAWAY_AVAILABLE = "SET_INCLUDE_TAKEAWAY_AVAILABLE",
 }
 
 interface Action {
@@ -34,7 +40,10 @@ interface Action {
         | FilterAction.ADD_FOOD_TYPE_FILTER
         | FilterAction.REMOVE_FOOD_TYPE_FILTER
         | FilterAction.SET_INCLUDE_OPEN_NOW
-        | FilterAction.SET_MAX_DISTANCE_PERCENT;
+        | FilterAction.SET_MAX_DISTANCE_PERCENT
+        | FilterAction.SET_INCLUDE_RESERVATIONS_AVAILABLE
+        | FilterAction.SET_INCLUDE_DELIVERY_AVAILABLE
+        | FilterAction.SET_INCLUDE_TAKEAWAY_AVAILABLE;
     payload: {
         updateOnMapMove?: boolean;
         foodTypeFilters?: GmapsFoodTypeFilter[];
@@ -42,6 +51,9 @@ interface Action {
         foodTypeFilterToRemove?: GmapsFoodTypeFilter;
         includeOpenNow?: boolean;
         maxDistancePercent?: number;
+        includeReservationsAvailable?: boolean;
+        includeDeliveryAvailable?: boolean;
+        includeTakeawayAvailable?: boolean;
     };
 }
 
@@ -92,6 +104,30 @@ const filterReducer = (state: State, action: Action): State => {
                     state.maxDistancePercent,
             };
         }
+        case FilterAction.SET_INCLUDE_RESERVATIONS_AVAILABLE: {
+            return {
+                ...state,
+                includeReservationsAvailable:
+                    action.payload.includeReservationsAvailable ??
+                    state.includeReservationsAvailable,
+            };
+        }
+        case FilterAction.SET_INCLUDE_TAKEAWAY_AVAILABLE: {
+            return {
+                ...state,
+                includeTakeawayAvailable:
+                    action.payload.includeTakeawayAvailable ??
+                    state.includeTakeawayAvailable,
+            };
+        }
+        case FilterAction.SET_INCLUDE_DELIVERY_AVAILABLE: {
+            return {
+                ...state,
+                includeDeliveryAvailable:
+                    action.payload.includeDeliveryAvailable ??
+                    state.includeDeliveryAvailable,
+            };
+        }
         default:
             return state;
     }
@@ -107,6 +143,9 @@ const initialFilterState = {
     foodTypeFilters: [],
     includeOpenNow: false,
     maxDistancePercent: 25,
+    includeReservationsAvailable: false,
+    includeDeliveryAvailable: false,
+    includeTakeawayAvailable: false,
 };
 
 const FilterContext = React.createContext<ContextProps>({} as ContextProps);

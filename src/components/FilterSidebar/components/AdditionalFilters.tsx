@@ -4,15 +4,48 @@ import { useFilterContext } from "../FiltersContext";
 function AdditionalFilters() {
     const { state } = useFilterContext();
 
-    const { includeOpenNow } = state;
+    const {
+        includeOpenNow,
+        includeReservationsAvailable,
+        includeDeliveryAvailable,
+        includeTakeawayAvailable,
+    } = state;
 
-    const { setIncludeOpenNow } = useFilterContextInteractions();
+    const {
+        setIncludeOpenNow,
+        setIncludeReservationsAvailable,
+        setIncludeTakeawayAvailable,
+        setIncludeDeliveryAvailable,
+    } = useFilterContextInteractions();
 
     const handleOpenNowToggle = () => {
         if (includeOpenNow) {
             setIncludeOpenNow(false);
         } else {
             setIncludeOpenNow(true);
+        }
+    };
+
+    const handleIncludeReservationsAvailableToggle = () => {
+        if (includeReservationsAvailable) {
+            setIncludeReservationsAvailable(false);
+        } else {
+            setIncludeReservationsAvailable(true);
+        }
+    };
+
+    const handleIncludeDeliveryAvailableToggle = () => {
+        if (includeDeliveryAvailable) {
+            setIncludeDeliveryAvailable(false);
+        } else {
+            setIncludeDeliveryAvailable(true);
+        }
+    };
+    const handleIncludeTakeawayAvailableToggle = () => {
+        if (includeTakeawayAvailable) {
+            setIncludeTakeawayAvailable(false);
+        } else {
+            setIncludeTakeawayAvailable(true);
         }
     };
 
@@ -29,12 +62,31 @@ function AdditionalFilters() {
                 Open Now
             </label>
             <label className="fieldset-label">
-                <input type="checkbox" defaultChecked className="toggle" />
+                <input
+                    type="checkbox"
+                    className="toggle"
+                    checked={includeReservationsAvailable}
+                    onChange={handleIncludeReservationsAvailableToggle}
+                />
                 Reservations Available
             </label>
             <label className="fieldset-label">
-                <input type="checkbox" defaultChecked className="toggle" />
+                <input
+                    type="checkbox"
+                    className="toggle"
+                    checked={includeDeliveryAvailable}
+                    onChange={handleIncludeDeliveryAvailableToggle}
+                />
                 Delivery Available
+            </label>
+            <label className="fieldset-label">
+                <input
+                    type="checkbox"
+                    className="toggle"
+                    checked={includeTakeawayAvailable}
+                    onChange={handleIncludeTakeawayAvailableToggle}
+                />
+                Takeaway Available
             </label>
         </fieldset>
     );

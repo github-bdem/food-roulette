@@ -8,7 +8,8 @@ import React from "react";
 // ramen_restaurant;
 
 interface GmapsFoodTypeFilter {
-    gmapsLocationType: string;
+    id: string;
+    gmapsLocationTypes: string[];
     displayName: string;
 }
 
@@ -66,9 +67,8 @@ const filterReducer = (state: State, action: Action): State => {
                 foodTypeFilters: [
                     ...state.foodTypeFilters.filter(
                         (foodTypeFilter: GmapsFoodTypeFilter) =>
-                            foodTypeFilter.gmapsLocationType !==
-                            action.payload.foodTypeFilterToRemove
-                                ?.gmapsLocationType,
+                            foodTypeFilter.id !==
+                            action.payload.foodTypeFilterToRemove?.id,
                     ),
                 ],
             };

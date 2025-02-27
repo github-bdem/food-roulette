@@ -19,10 +19,7 @@ function FoodTypeFilters() {
             <legend className="fieldset-legend">Food Type</legend>
             {availableFoodTypeFilters.map(
                 (foodTypeFilter: GmapsFoodTypeFilter) => (
-                    <label
-                        key={foodTypeFilter.gmapsLocationType}
-                        className="fieldset-label"
-                    >
+                    <label key={foodTypeFilter.id} className="fieldset-label">
                         <input
                             type="checkbox"
                             className="checkbox"

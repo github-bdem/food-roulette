@@ -39,8 +39,7 @@ const useFilterContextInteractions = () => {
             isFoodFilterApplied: (gmapsFilter: GmapsFoodTypeFilter) => {
                 return !!state.foodTypeFilters.find(
                     (appliedFilter: GmapsFoodTypeFilter) =>
-                        appliedFilter.gmapsLocationType ===
-                        gmapsFilter.gmapsLocationType,
+                        appliedFilter.id === gmapsFilter.id,
                 );
             },
             setIncludeOpenNow: (includeOpenNow: boolean) => {

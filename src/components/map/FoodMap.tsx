@@ -87,7 +87,7 @@ function FoodMap() {
         console.log("fetching food locations");
         if (placesLib && center) {
             const request = {
-                includedPrimaryTypes: ["restaurant"],
+                includedTypes: ["ramen_restaurant"],
                 fields: ["displayName"],
                 locationRestriction: {
                     center,

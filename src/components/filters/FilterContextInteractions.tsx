@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import {
     FilterAction,
-    FoodTypeFilter,
+    GmapsFoodTypeFilter,
     useFilterContext,
 } from "./FiltersContext";
 
@@ -18,7 +18,7 @@ const useFilterContextInteractions = () => {
                     },
                 });
             },
-            addFoodTypeFilter: (foodTypeFilterToAdd: FoodTypeFilter) => {
+            addFoodTypeFilter: (foodTypeFilterToAdd: GmapsFoodTypeFilter) => {
                 dispatch({
                     type: FilterAction.ADD_FOOD_TYPE_FILTER,
                     payload: {
@@ -26,7 +26,9 @@ const useFilterContextInteractions = () => {
                     },
                 });
             },
-            removeFoodTypeFilter: (foodTypeFilterToRemove: FoodTypeFilter) => {
+            removeFoodTypeFilter: (
+                foodTypeFilterToRemove: GmapsFoodTypeFilter,
+            ) => {
                 dispatch({
                     type: FilterAction.REMOVE_FOOD_TYPE_FILTER,
                     payload: {
@@ -34,10 +36,11 @@ const useFilterContextInteractions = () => {
                     },
                 });
             },
-            isFoodFilterApplied: (filterName: FoodTypeFilter) => {
+            isFoodFilterApplied: (gmapsFilter: GmapsFoodTypeFilter) => {
                 return !!state.foodTypeFilters.find(
-                    (appliedFilterName: FoodTypeFilter) =>
-                        appliedFilterName === filterName,
+                    (appliedFilter: GmapsFoodTypeFilter) =>
+                        appliedFilter.gmapsLocationType ===
+                        gmapsFilter.gmapsLocationType,
                 );
             },
             setIncludeOpenNow: (includeOpenNow: boolean) => {

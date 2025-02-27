@@ -5,23 +5,16 @@ import React from "react";
 // meal_delivery
 // meal_takeaway
 
-enum FoodTypeFilter {
-    chicken = "Chicken",
-    mexican = "Mexican",
-    asian = "Asian",
-    pizza = "Pizza",
-    salads = "Salads",
-    burgers = "Burgers",
-    ramen = "Ramen",
-    indian = "Indian",
-    sushi = "Sushi",
-    vegan = "Vegan",
-    american = "American",
+// ramen_restaurant;
+
+interface GmapsFoodTypeFilter {
+    gmapsLocationType: string;
+    displayName: string;
 }
 
 interface State {
     updateOnMapMove: boolean;
-    foodTypeFilters: FoodTypeFilter[];
+    foodTypeFilters: GmapsFoodTypeFilter[];
     includeOpenNow: boolean;
 }
 
@@ -40,9 +33,9 @@ interface Action {
         | FilterAction.SET_INCLUDE_OPEN_NOW;
     payload: {
         updateOnMapMove?: boolean;
-        foodTypeFilters?: FoodTypeFilter[];
-        foodTypeFilterToAdd?: FoodTypeFilter;
-        foodTypeFilterToRemove?: FoodTypeFilter;
+        foodTypeFilters?: GmapsFoodTypeFilter[];
+        foodTypeFilterToAdd?: GmapsFoodTypeFilter;
+        foodTypeFilterToRemove?: GmapsFoodTypeFilter;
         includeOpenNow?: boolean;
     };
 }
@@ -56,6 +49,7 @@ const filterReducer = (state: State, action: Action): State => {
                     action.payload.updateOnMapMove ?? state.updateOnMapMove,
             };
         case FilterAction.ADD_FOOD_TYPE_FILTER: {
+            // TODO: MIGHT WANT TO DO ADD THEN FILTER TO PREVENT DUPLICATES
             return {
                 ...state,
                 foodTypeFilters: action.payload.foodTypeFilterToAdd
@@ -71,9 +65,10 @@ const filterReducer = (state: State, action: Action): State => {
                 ...state,
                 foodTypeFilters: [
                     ...state.foodTypeFilters.filter(
-                        (foodTypeFilter: FoodTypeFilter) =>
-                            foodTypeFilter !==
-                            action.payload.foodTypeFilterToRemove,
+                        (foodTypeFilter: GmapsFoodTypeFilter) =>
+                            foodTypeFilter.gmapsLocationType !==
+                            action.payload.foodTypeFilterToRemove
+                                ?.gmapsLocationType,
                     ),
                 ],
             };
@@ -119,5 +114,6 @@ export {
     FilterAction,
     initialFilterState,
     useFilterContext,
-    FoodTypeFilter,
 };
+
+export type { GmapsFoodTypeFilter };

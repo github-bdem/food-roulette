@@ -1,5 +1,10 @@
 import React from "react";
 
+// restaurant
+
+// meal_delivery
+// meal_takeaway
+
 enum FoodTypeFilter {
     chicken = "Chicken",
     mexican = "Mexican",

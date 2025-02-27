@@ -10,7 +10,7 @@ interface State {
     zoom?: number;
     lastUpdatedZoom?: number;
     lastUpdatedCenter?: latLngPosition;
-    foodLocations?: google.maps.places.PlaceResult[];
+    foodLocations?: google.maps.places.Place[];
 }
 
 enum FoodMapAction {
@@ -29,7 +29,7 @@ interface Action {
         zoom?: number;
         lastUpdatedZoom?: number;
         lastUpdatedCenter?: latLngPosition;
-        foodLocations?: google.maps.places.PlaceResult[];
+        foodLocations?: google.maps.places.Place[];
     };
 }
 

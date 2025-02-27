@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
     AdvancedMarker,
     ControlPosition,
@@ -7,7 +7,6 @@ import {
     MapControl,
     MapEvent,
     Pin,
-    useMap,
     useMapsLibrary,
 } from "@vis.gl/react-google-maps";
 import {
@@ -45,18 +44,7 @@ function FoodMap() {
 
     const { updateOnMapMove } = filterState;
 
-    const map = useMap();
     const placesLib = useMapsLibrary("places");
-
-    const [placesService, setPlacesService] =
-        useState<google.maps.places.PlacesService | null>(null);
-
-    useEffect(() => {
-        if (!placesLib || !map || placesService) return;
-
-        const svc = new placesLib.PlacesService(map);
-        setPlacesService(svc);
-    }, [placesLib, map, placesService]);
 
     useEffect(() => {
         const geolocationOptions = {
@@ -82,14 +70,9 @@ function FoodMap() {
     }, [foodMapDispatch]);
 
     const handleNewFoodLocationsResponse = (
-        placeSearchResults: google.maps.places.PlaceResult[] | null,
-        placesServiceStatus: google.maps.places.PlacesServiceStatus,
-        // placeSearchPagination: google.maps.places.PlaceSearchPagination | null, // will be used to reroll
+        placeSearchResults: google.maps.places.Place[] | null,
     ) => {
-        if (
-            placesServiceStatus === google.maps.places.PlacesServiceStatus.OK &&
-            placeSearchResults !== null
-        ) {
+        if (placeSearchResults !== null) {
             foodMapDispatch({
                 type: FoodMapAction.SET_FOOD_LOCATIONS,
                 payload: { foodLocations: placeSearchResults },
@@ -97,22 +80,27 @@ function FoodMap() {
         }
     };
 
-    const fetchFoodLocations = ({
+    const fetchFoodLocations = async ({
         newCenter,
         newZoom,
     }: FetchFoodLocationsProps) => {
         console.log("fetching food locations");
-        if (placesService) {
+        if (placesLib && center) {
             const request = {
-                location: center,
-                radius: 1500,
-                type: "restaurant",
+                includedPrimaryTypes: ["restaurant"],
+                fields: ["displayName"],
+                locationRestriction: {
+                    center,
+                    radius: 1500,
+                },
                 // keyword: "pizza",
                 // maxPriceLevel,
                 // minPriceLevel,
                 // openNow,
             };
-            // placesService.nearbySearch(request, handleNewFoodLocationsResponse);
+            const nearbyPlaces = await placesLib.Place.searchNearby(request);
+
+            handleNewFoodLocationsResponse(nearbyPlaces.places);
             console.log("making request", request);
 
             foodMapDispatch({
@@ -191,7 +179,12 @@ function FoodMap() {
                         newZoom: zoom,
                     })
                 ) {
-                    fetchFoodLocations({ newCenter: center, newZoom: zoom });
+                    fetchFoodLocations({
+                        newCenter: center,
+                        newZoom: zoom,
+                    }).catch((error) => {
+                        console.error("Error fetching food locations", error);
+                    });
                 }
             }
         }
@@ -243,14 +236,14 @@ function FoodMap() {
                     Reroll
                 </button>
             </MapControl>
-            {foodLocations?.map((location) => {
-                if (location?.geometry?.location) {
+            {foodLocations?.map((location: google.maps.places.Place) => {
+                if (location?.location) {
                     const convertedLocationCenter = convertGmapsLatLngToLatLng(
-                        location.geometry.location,
+                        location.location,
                     );
                     return (
                         <AdvancedMarker
-                            key={location.place_id}
+                            key={location.id}
                             position={convertedLocationCenter}
                         ></AdvancedMarker>
                     );

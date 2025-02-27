@@ -88,6 +88,22 @@ const useFilterContextInteractions = () => {
                     },
                 });
             },
+            setMinimumRating: (minimumRating: number) => {
+                dispatch({
+                    type: FilterAction.SET_MINIMUM_RATING,
+                    payload: {
+                        minimumRating,
+                    },
+                });
+            },
+            setMinimumPrice: (minimumPrice: number) => {
+                dispatch({
+                    type: FilterAction.SET_MINIMUM_PRICE,
+                    payload: {
+                        minimumPrice,
+                    },
+                });
+            },
         }),
         [state, dispatch],
     );

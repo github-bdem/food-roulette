@@ -21,6 +21,8 @@ interface State {
     includeReservationsAvailable: boolean;
     includeDeliveryAvailable: boolean;
     includeTakeawayAvailable: boolean;
+    minimumRating: number;
+    minimumPrice: number;
 }
 
 enum FilterAction {
@@ -32,6 +34,8 @@ enum FilterAction {
     SET_INCLUDE_RESERVATIONS_AVAILABLE = "SET_INCLUDE_RESERVATIONS_AVAILABLE",
     SET_INCLUDE_DELIVERY_AVAILABLE = "SET_INCLUDE_DELIVERY_AVAILABLE",
     SET_INCLUDE_TAKEAWAY_AVAILABLE = "SET_INCLUDE_TAKEAWAY_AVAILABLE",
+    SET_MINIMUM_RATING = "SET_MINIMUM_RATING",
+    SET_MINIMUM_PRICE = "SET_MINIMUM_PRICE",
 }
 
 interface Action {
@@ -43,7 +47,9 @@ interface Action {
         | FilterAction.SET_MAX_DISTANCE_PERCENT
         | FilterAction.SET_INCLUDE_RESERVATIONS_AVAILABLE
         | FilterAction.SET_INCLUDE_DELIVERY_AVAILABLE
-        | FilterAction.SET_INCLUDE_TAKEAWAY_AVAILABLE;
+        | FilterAction.SET_INCLUDE_TAKEAWAY_AVAILABLE
+        | FilterAction.SET_MINIMUM_RATING
+        | FilterAction.SET_MINIMUM_PRICE;
     payload: {
         updateOnMapMove?: boolean;
         foodTypeFilters?: GmapsFoodTypeFilter[];
@@ -54,6 +60,8 @@ interface Action {
         includeReservationsAvailable?: boolean;
         includeDeliveryAvailable?: boolean;
         includeTakeawayAvailable?: boolean;
+        minimumRating?: number;
+        minimumPrice?: number;
     };
 }
 
@@ -128,6 +136,19 @@ const filterReducer = (state: State, action: Action): State => {
                     state.includeDeliveryAvailable,
             };
         }
+        case FilterAction.SET_MINIMUM_RATING: {
+            return {
+                ...state,
+                minimumRating:
+                    action.payload.minimumRating ?? state.minimumRating,
+            };
+        }
+        case FilterAction.SET_MINIMUM_PRICE: {
+            return {
+                ...state,
+                minimumPrice: action.payload.minimumPrice ?? state.minimumPrice,
+            };
+        }
         default:
             return state;
     }
@@ -146,6 +167,8 @@ const initialFilterState = {
     includeReservationsAvailable: false,
     includeDeliveryAvailable: false,
     includeTakeawayAvailable: false,
+    minimumRating: 1,
+    minimumPrice: 1,
 };
 
 const FilterContext = React.createContext<ContextProps>({} as ContextProps);

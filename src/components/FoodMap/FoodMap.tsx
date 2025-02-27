@@ -16,7 +16,7 @@ import {
 } from "./FoodMapContext";
 import computeDistanceBetweenLatLng from "./ComputeDistanceBetweenLatLng";
 import convertGmapsLatLngToLatLng from "./ConvertGmapsLatLngToLatLng";
-import { useFilterContext } from "../filters/FiltersContext";
+import { useFilterContext } from "../FilterSidebar/FiltersContext";
 
 const minimumCenterDeltaToTriggerUpdate = 2; // Delta is expressed in km
 const minimumZoomLevelDeltaToTriggerUpdate = 2;
@@ -88,7 +88,18 @@ function FoodMap() {
         if (placesLib && center) {
             const request = {
                 includedTypes: ["ramen_restaurant"],
-                fields: ["displayName"],
+                fields: [
+                    "displayName",
+                    "photos",
+                    "location",
+                    "rating",
+                    "userRatingCount",
+                    "priceLevel",
+                    "websiteURI",
+                    "nationalPhoneNumber",
+                    "formattedAddress",
+                    "googleMapsURI",
+                ],
                 locationRestriction: {
                     center,
                     radius: 1500,

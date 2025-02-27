@@ -1,11 +1,11 @@
-import FoodMap from "./components/map/FoodMap";
+import FoodMap from "./components/FoodMap/FoodMap";
 import { APIProvider } from "@vis.gl/react-google-maps";
-import ResultsSidebar from "@components/results/ResultsSidebar";
-import FilterSidebar from "src/components/filters/FilterSidebar";
-import PreferencesMenu from "./components/preferencesMenu/PreferencesMenu";
-import FoodMapProvider from "./components/map/FoodMapContextProvider";
-import FilterProvider from "./components/filters/FilterContextProvider";
-import UpdateOnMoveToggle from "./components/updateOnMoveToggle/updateOnMoveToggle";
+import ResultsSidebar from "src/components/ResultsSidebar/ResultsSidebar";
+import FilterSidebar from "src/components/FilterSidebar/FilterSidebar";
+import PreferencesMenu from "./components/PreferencesMenu/PreferencesMenu";
+import FoodMapProvider from "./components/FoodMap/FoodMapContextProvider";
+import FilterProvider from "./components/FilterSidebar/FilterContextProvider";
+import UpdateOnMoveToggle from "./components/UpdateOnMoveToggle/UpdateOnMoveToggle";
 
 import "./App.css";
 

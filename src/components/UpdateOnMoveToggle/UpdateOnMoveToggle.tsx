@@ -1,5 +1,5 @@
-import useFilterContextInteractions from "../filters/FilterContextInteractions";
-import { useFilterContext } from "../filters/FiltersContext";
+import useFilterContextInteractions from "../FilterSidebar/FilterContextInteractions";
+import { useFilterContext } from "../FilterSidebar/FiltersContext";
 
 function UpdateOnMoveToggle() {
     const { state } = useFilterContext();

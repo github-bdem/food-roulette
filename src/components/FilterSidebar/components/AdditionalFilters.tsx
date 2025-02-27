@@ -1,5 +1,5 @@
-import useFilterContextInteractions from "./FilterContextInteractions";
-import { useFilterContext } from "./FiltersContext";
+import useFilterContextInteractions from "../FilterContextInteractions";
+import { useFilterContext } from "../FiltersContext";
 
 function AdditionalFilters() {
     const { state } = useFilterContext();

@@ -1,8 +1,14 @@
-import availableFoodTypeFilters from "./AvailableGmapsFoodTypeFilters";
-import useFilterContextInteractions from "./FilterContextInteractions";
-import { GmapsFoodTypeFilter } from "./FiltersContext";
+import useFilterContextInteractions from "../FilterContextInteractions";
+import { GmapsFoodTypeFilter } from "../FiltersContext";
 
-function FoodTypeFilters() {
+interface GmapsFoodTypeFilterSectionProps {
+    gmapsFoodTypeFilterList: GmapsFoodTypeFilter[];
+    gmapsFoodTypeFilterSectionTitle: string;
+}
+
+function GmapsFoodTypeFilterSection(props: GmapsFoodTypeFilterSectionProps) {
+    const { gmapsFoodTypeFilterList, gmapsFoodTypeFilterSectionTitle } = props;
+
     const { addFoodTypeFilter, removeFoodTypeFilter, isFoodFilterApplied } =
         useFilterContextInteractions();
 
@@ -16,8 +22,10 @@ function FoodTypeFilters() {
 
     return (
         <fieldset className="fieldset bg-base-100 border-base-300 rounded-box w-5/6 border p-4">
-            <legend className="fieldset-legend">Food Type</legend>
-            {availableFoodTypeFilters.map(
+            <legend className="fieldset-legend">
+                {gmapsFoodTypeFilterSectionTitle}
+            </legend>
+            {gmapsFoodTypeFilterList.map(
                 (foodTypeFilter: GmapsFoodTypeFilter) => (
                     <label key={foodTypeFilter.id} className="fieldset-label">
                         <input
@@ -36,4 +44,4 @@ function FoodTypeFilters() {
     );
 }
 
-export default FoodTypeFilters;
+export default GmapsFoodTypeFilterSection;

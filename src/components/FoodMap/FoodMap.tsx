@@ -7,7 +7,6 @@ import {
     MapControl,
     MapEvent,
     Pin,
-    useMapsLibrary,
 } from "@vis.gl/react-google-maps";
 import {
     FoodMapAction,
@@ -17,16 +16,12 @@ import {
 import computeDistanceBetweenLatLng from "./ComputeDistanceBetweenLatLng";
 import convertGmapsLatLngToLatLng from "./ConvertGmapsLatLngToLatLng";
 import { useFilterContext } from "../FilterSidebar/FiltersContext";
+import useFoodMapContextInteractions from "./FoodMapContextInteractions";
 
 const minimumCenterDeltaToTriggerUpdate = 2; // Delta is expressed in km
 const minimumZoomLevelDeltaToTriggerUpdate = 2;
 
 interface ShouldFetchNewPizzaLocationsProps {
-    newCenter: latLngPosition;
-    newZoom: number;
-}
-
-interface FetchFoodLocationsProps {
     newCenter: latLngPosition;
     newZoom: number;
 }
@@ -44,7 +39,7 @@ function FoodMap() {
 
     const { updateOnMapMove } = filterState;
 
-    const placesLib = useMapsLibrary("places");
+    const { fetchFoodLocations } = useFoodMapContextInteractions();
 
     useEffect(() => {
         const geolocationOptions = {
@@ -68,61 +63,6 @@ function FoodMap() {
             geolocationOptions,
         );
     }, [foodMapDispatch]);
-
-    const handleNewFoodLocationsResponse = (
-        placeSearchResults: google.maps.places.Place[] | null,
-    ) => {
-        if (placeSearchResults !== null) {
-            foodMapDispatch({
-                type: FoodMapAction.SET_FOOD_LOCATIONS,
-                payload: { foodLocations: placeSearchResults },
-            });
-        }
-    };
-
-    const fetchFoodLocations = async ({
-        newCenter,
-        newZoom,
-    }: FetchFoodLocationsProps) => {
-        console.log("fetching food locations");
-        if (placesLib && center) {
-            const request = {
-                includedTypes: ["ramen_restaurant"],
-                fields: [
-                    "displayName",
-                    "photos",
-                    "location",
-                    "rating",
-                    "userRatingCount",
-                    "priceLevel",
-                    "websiteURI",
-                    "nationalPhoneNumber",
-                    "formattedAddress",
-                    "googleMapsURI",
-                ],
-                locationRestriction: {
-                    center,
-                    radius: 1500,
-                },
-                // keyword: "pizza",
-                // maxPriceLevel,
-                // minPriceLevel,
-                // openNow,
-            };
-            const nearbyPlaces = await placesLib.Place.searchNearby(request);
-
-            handleNewFoodLocationsResponse(nearbyPlaces.places);
-            console.log("making request", request);
-
-            foodMapDispatch({
-                type: FoodMapAction.SET_LAST_UPDATED_MAP_CAMERA_VALUES,
-                payload: {
-                    lastUpdatedCenter: newCenter,
-                    lastUpdatedZoom: newZoom,
-                },
-            });
-        }
-    };
 
     const shouldFetchNewFoodLocations = ({
         newCenter,

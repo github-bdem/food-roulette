@@ -5,20 +5,27 @@ import {
     latLngPosition,
     useFoodMapContext,
 } from "./FoodMapContext";
+import {
+    GmapsFoodTypeFilter,
+    useFilterContext,
+} from "../FilterSidebar/FiltersContext";
 
 interface FetchFoodLocationsProps {
     newCenter: latLngPosition;
     newZoom: number;
 }
 
-const useFoodMapContextInteractions = () => {
+const useFetchFoodMapLocations = () => {
     const foodMapContext = useFoodMapContext();
     const foodMapState = foodMapContext.state;
     const foodMapDispatch = foodMapContext.dispatch;
 
+    const filtersContext = useFilterContext();
+    const filterState = filtersContext.state;
+
     const placesLib = useMapsLibrary("places");
 
-    const foodMapContextUpdateActions = useMemo(
+    const fetchFoodMapLocationActions = useMemo(
         () => ({
             fetchFoodLocations: async ({
                 newCenter,
@@ -26,8 +33,28 @@ const useFoodMapContextInteractions = () => {
             }: FetchFoodLocationsProps) => {
                 console.log("fetching food locations");
                 if (placesLib && foodMapState.center) {
+                    let allIncludedTypes: string[] = [];
+
+                    filterState.foodTypeFilters.forEach(
+                        (appliedFilter: GmapsFoodTypeFilter) =>
+                            (allIncludedTypes = [
+                                ...allIncludedTypes,
+                                ...appliedFilter.gmapsLocationTypes,
+                            ]),
+                    );
+
+                    let includedTypes: string[] = allIncludedTypes.filter(
+                        (value, index, self) => self.indexOf(value) === index,
+                    );
+
+                    if (includedTypes.length === 0) {
+                        includedTypes = ["restaurant"];
+                    }
+
+                    console.log("includedTypes", includedTypes);
+
                     const request = {
-                        includedTypes: ["ramen_restaurant"],
+                        includedTypes,
                         fields: [
                             "displayName",
                             "photos",
@@ -71,10 +98,10 @@ const useFoodMapContextInteractions = () => {
                 }
             },
         }),
-        [foodMapState, foodMapDispatch, placesLib],
+        [foodMapState, foodMapDispatch, placesLib, filterState],
     );
 
-    return foodMapContextUpdateActions;
+    return fetchFoodMapLocationActions;
 };
 
-export default useFoodMapContextInteractions;
+export default useFetchFoodMapLocations;

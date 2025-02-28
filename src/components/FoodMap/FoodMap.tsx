@@ -16,7 +16,7 @@ import {
 import computeDistanceBetweenLatLng from "./ComputeDistanceBetweenLatLng";
 import convertGmapsLatLngToLatLng from "./ConvertGmapsLatLngToLatLng";
 import { useFilterContext } from "../FilterSidebar/FiltersContext";
-import useFoodMapContextInteractions from "./FoodMapContextInteractions";
+import useFetchFoodMapLocations from "./FetchFoodMapLocations";
 
 const minimumCenterDeltaToTriggerUpdate = 2; // Delta is expressed in km
 const minimumZoomLevelDeltaToTriggerUpdate = 2;
@@ -39,7 +39,7 @@ function FoodMap() {
 
     const { updateOnMapMove } = filterState;
 
-    const { fetchFoodLocations } = useFoodMapContextInteractions();
+    const { fetchFoodLocations } = useFetchFoodMapLocations();
 
     useEffect(() => {
         const geolocationOptions = {
@@ -70,21 +70,11 @@ function FoodMap() {
     }: ShouldFetchNewPizzaLocationsProps) => {
         const initialFetchCheck = !lastUpdatedCenter && !lastUpdatedZoom;
         if (initialFetchCheck) {
-            /**
-             * Initial page load, last updated is undefined, thus we want to fetch
-             * new locations
-             */
             return true;
         }
         const hasAllDimensions =
             lastUpdatedCenter && lastUpdatedZoom && newCenter && newZoom;
         if (hasAllDimensions) {
-            /**
-             * All dimensions are available, we can compare the distances
-             * between center and zoom level.  If either difference exceed
-             *  our epsilons then we want to fetch new locations
-             */
-
             const distanceBetweenLatLng = computeDistanceBetweenLatLng(
                 lastUpdatedCenter,
                 newCenter,
@@ -99,9 +89,6 @@ function FoodMap() {
 
             return updateOnMapMove && (centerDeltaTrigger || zoomDeltaTrigger);
         } else {
-            /**
-             * Error state, lets save some money and not make api requests
-             */
             console.error("Map center or zoom storage error");
             return false;
         }

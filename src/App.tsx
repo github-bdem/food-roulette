@@ -12,18 +12,18 @@ import "./App.css";
 function App() {
     return (
         <div className="drawer drawer-end flex size-full">
-            <FoodMapProvider>
-                <FilterProvider>
-                    <input
-                        id="filter-drawer"
-                        type="checkbox"
-                        className="drawer-toggle"
-                    />
-                    <div className="drawer-content flex size-full flex-col">
-                        <APIProvider
-                            apiKey={`${import.meta.env.VITE_GMAPS_API_KEY}`}
-                            region="US"
-                        >
+            <APIProvider
+                apiKey={`${import.meta.env.VITE_GMAPS_API_KEY}`}
+                region="US"
+            >
+                <FoodMapProvider>
+                    <FilterProvider>
+                        <input
+                            id="filter-drawer"
+                            type="checkbox"
+                            className="drawer-toggle"
+                        />
+                        <div className="drawer-content flex size-full flex-col">
                             <div className="navbar bg-primary navbar-height flex justify-between p-4 shadow-sm">
                                 <div>Food Roulette</div>
                                 <div className="flex flex-row gap-4">
@@ -39,18 +39,18 @@ function App() {
                                     <FoodMap />
                                 </div>
                             </div>
-                        </APIProvider>
-                    </div>
-                    <div className="drawer-side lg:drawer-open h-full">
-                        <label
-                            htmlFor="filter-drawer"
-                            aria-label="close sidebar"
-                            className="drawer-overlay"
-                        />
-                        <FilterSidebar />
-                    </div>
-                </FilterProvider>
-            </FoodMapProvider>
+                        </div>
+                        <div className="drawer-side lg:drawer-open h-full">
+                            <label
+                                htmlFor="filter-drawer"
+                                aria-label="close sidebar"
+                                className="drawer-overlay"
+                            />
+                            <FilterSidebar />
+                        </div>
+                    </FilterProvider>
+                </FoodMapProvider>
+            </APIProvider>
         </div>
     );
 }

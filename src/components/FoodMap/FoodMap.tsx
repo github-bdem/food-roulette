@@ -117,14 +117,21 @@ function FoodMap() {
                         newZoom: zoom,
                     })
                 ) {
-                    fetchFoodLocations({
-                        newCenter: center,
-                        newZoom: zoom,
-                    }).catch((error) => {
+                    fetchFoodLocations().catch((error) => {
                         console.error("Error fetching food locations", error);
                     });
                 }
             }
+        }
+    };
+
+    const handleNewSearchClick = () => {
+        try {
+            fetchFoodLocations().catch((error) => {
+                console.error("Error fetching food locations", error);
+            });
+        } catch (error) {
+            console.error("Error handling new search click", error);
         }
     };
 
@@ -170,8 +177,11 @@ function FoodMap() {
                 </label>
             </MapControl>
             <MapControl position={ControlPosition.RIGHT_BOTTOM}>
-                <button className="btn btn-primary mr-4 mb-2 p-4">
-                    Reroll
+                <button
+                    className="btn btn-primary mr-4 mb-2 p-4"
+                    onClick={handleNewSearchClick}
+                >
+                    Search This Area
                 </button>
             </MapControl>
             {foodLocations?.map((location: google.maps.places.Place) => {

@@ -19,7 +19,7 @@ const useFetchFoodMapLocations = () => {
     const fetchFoodMapLocationActions = useMemo(
         () => ({
             fetchFoodLocations: async () => {
-                console.log("fetching food locations");
+                console.log("calling");
                 if (placesLib && foodMapState.center) {
                     let allIncludedTypes: string[] = [];
 
@@ -31,16 +31,16 @@ const useFetchFoodMapLocations = () => {
                             ]),
                     );
 
-                    let includedTypes: string[] = allIncludedTypes.filter(
+                    let uniqueIncludedTypes: string[] = allIncludedTypes.filter(
                         (value, index, self) => self.indexOf(value) === index,
                     );
 
-                    if (includedTypes.length === 0) {
-                        includedTypes = ["restaurant"];
+                    if (uniqueIncludedTypes.length === 0) {
+                        uniqueIncludedTypes = ["restaurant"];
                     }
 
                     const request = {
-                        includedTypes,
+                        includedTypes: uniqueIncludedTypes,
                         fields: [
                             "displayName",
                             "photos",

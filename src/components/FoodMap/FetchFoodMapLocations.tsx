@@ -20,7 +20,11 @@ const useFetchFoodMapLocations = () => {
         () => ({
             fetchFoodLocations: async () => {
                 console.log("calling");
-                if (placesLib && foodMapState.center) {
+                if (
+                    placesLib &&
+                    foodMapState.center &&
+                    filterState.maxDistancePercent
+                ) {
                     let allIncludedTypes: string[] = [];
 
                     filterState.foodTypeFilters.forEach(
@@ -55,12 +59,9 @@ const useFetchFoodMapLocations = () => {
                         ],
                         locationRestriction: {
                             center: foodMapState.center,
-                            radius: 1500,
+                            radius:
+                                (3218 * filterState.maxDistancePercent) / 100,
                         },
-                        // keyword: "pizza",
-                        // maxPriceLevel,
-                        // minPriceLevel,
-                        // openNow,
                     };
                     const nearbyPlaces =
                         await placesLib.Place.searchNearby(request);

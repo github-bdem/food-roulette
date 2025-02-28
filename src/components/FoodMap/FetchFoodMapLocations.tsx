@@ -1,19 +1,10 @@
 import { useMapsLibrary } from "@vis.gl/react-google-maps";
 import { useMemo } from "react";
-import {
-    FoodMapAction,
-    latLngPosition,
-    useFoodMapContext,
-} from "./FoodMapContext";
+import { FoodMapAction, useFoodMapContext } from "./FoodMapContext";
 import {
     GmapsFoodTypeFilter,
     useFilterContext,
 } from "../FilterSidebar/FiltersContext";
-
-interface FetchFoodLocationsProps {
-    newCenter: latLngPosition;
-    newZoom: number;
-}
 
 const useFetchFoodMapLocations = () => {
     const foodMapContext = useFoodMapContext();
@@ -27,10 +18,7 @@ const useFetchFoodMapLocations = () => {
 
     const fetchFoodMapLocationActions = useMemo(
         () => ({
-            fetchFoodLocations: async ({
-                newCenter,
-                newZoom,
-            }: FetchFoodLocationsProps) => {
+            fetchFoodLocations: async () => {
                 console.log("fetching food locations");
                 if (placesLib && foodMapState.center) {
                     let allIncludedTypes: string[] = [];
@@ -50,8 +38,6 @@ const useFetchFoodMapLocations = () => {
                     if (includedTypes.length === 0) {
                         includedTypes = ["restaurant"];
                     }
-
-                    console.log("includedTypes", includedTypes);
 
                     const request = {
                         includedTypes,
@@ -91,8 +77,8 @@ const useFetchFoodMapLocations = () => {
                     foodMapDispatch({
                         type: FoodMapAction.SET_LAST_UPDATED_MAP_CAMERA_VALUES,
                         payload: {
-                            lastUpdatedCenter: newCenter,
-                            lastUpdatedZoom: newZoom,
+                            lastUpdatedCenter: foodMapState.center,
+                            lastUpdatedZoom: foodMapState.zoom,
                         },
                     });
                 }

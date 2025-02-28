@@ -6,6 +6,14 @@ import {
     useFilterContext,
 } from "../FilterSidebar/FiltersContext";
 
+const foodPriceMapping = {
+    EXPENSIVE: 1,
+    FREE: 2,
+    INEXPENSIVE: 3,
+    MODERATE: 4,
+    VERY_EXPENSIVE: 5,
+};
+
 const useFetchFoodMapLocations = () => {
     const foodMapContext = useFoodMapContext();
     const foodMapState = foodMapContext.state;
@@ -62,16 +70,37 @@ const useFetchFoodMapLocations = () => {
                             radius:
                                 (3218 * filterState.maxDistancePercent) / 100,
                         },
+                        rankPreference:
+                            google.maps.places.SearchNearbyRankPreference
+                                .DISTANCE,
                     };
-                    const nearbyPlaces =
+                    console.log("making request", request);
+                    const nearbyPlacesResult =
                         await placesLib.Place.searchNearby(request);
 
-                    console.log("making request", request);
+                    let nearbyPlaces = nearbyPlacesResult.places;
 
-                    if (nearbyPlaces.places !== null) {
+                    if (nearbyPlaces !== null) {
+                        if (filterState.minimumRating > 1) {
+                            nearbyPlaces = nearbyPlaces.filter((place) =>
+                                place.rating
+                                    ? place.rating >= filterState.minimumRating
+                                    : true,
+                            );
+                        }
+
+                        if (filterState.maximumPrice > 1) {
+                            nearbyPlaces = nearbyPlaces.filter((place) =>
+                                place.priceLevel
+                                    ? foodPriceMapping[place.priceLevel] >=
+                                      filterState.maximumPrice
+                                    : true,
+                            );
+                        }
+
                         foodMapDispatch({
                             type: FoodMapAction.SET_FOOD_LOCATIONS,
-                            payload: { foodLocations: nearbyPlaces.places },
+                            payload: { foodLocations: nearbyPlaces },
                         });
                     }
 

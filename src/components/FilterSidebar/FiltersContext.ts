@@ -22,7 +22,7 @@ interface State {
     includeDeliveryAvailable: boolean;
     includeTakeawayAvailable: boolean;
     minimumRating: number;
-    minimumPrice: number;
+    maximumPrice: number;
 }
 
 enum FilterAction {
@@ -35,7 +35,7 @@ enum FilterAction {
     SET_INCLUDE_DELIVERY_AVAILABLE = "SET_INCLUDE_DELIVERY_AVAILABLE",
     SET_INCLUDE_TAKEAWAY_AVAILABLE = "SET_INCLUDE_TAKEAWAY_AVAILABLE",
     SET_MINIMUM_RATING = "SET_MINIMUM_RATING",
-    SET_MINIMUM_PRICE = "SET_MINIMUM_PRICE",
+    SET_MAXIMUM_PRICE = "SET_MAXIMUM_PRICE",
 }
 
 interface Action {
@@ -49,7 +49,7 @@ interface Action {
         | FilterAction.SET_INCLUDE_DELIVERY_AVAILABLE
         | FilterAction.SET_INCLUDE_TAKEAWAY_AVAILABLE
         | FilterAction.SET_MINIMUM_RATING
-        | FilterAction.SET_MINIMUM_PRICE;
+        | FilterAction.SET_MAXIMUM_PRICE;
     payload: {
         updateOnMapMove?: boolean;
         foodTypeFilters?: GmapsFoodTypeFilter[];
@@ -61,7 +61,7 @@ interface Action {
         includeDeliveryAvailable?: boolean;
         includeTakeawayAvailable?: boolean;
         minimumRating?: number;
-        minimumPrice?: number;
+        maximumPrice?: number;
     };
 }
 
@@ -143,10 +143,10 @@ const filterReducer = (state: State, action: Action): State => {
                     action.payload.minimumRating ?? state.minimumRating,
             };
         }
-        case FilterAction.SET_MINIMUM_PRICE: {
+        case FilterAction.SET_MAXIMUM_PRICE: {
             return {
                 ...state,
-                minimumPrice: action.payload.minimumPrice ?? state.minimumPrice,
+                maximumPrice: action.payload.maximumPrice ?? state.maximumPrice,
             };
         }
         default:
@@ -163,12 +163,12 @@ const initialFilterState = {
     updateOnMapMove: false,
     foodTypeFilters: [],
     includeOpenNow: false,
-    maxDistancePercent: 25,
+    maxDistancePercent: 50,
     includeReservationsAvailable: false,
     includeDeliveryAvailable: false,
     includeTakeawayAvailable: false,
-    minimumRating: 1,
-    minimumPrice: 1,
+    minimumRating: 3,
+    maximumPrice: 2,
 };
 
 const FilterContext = React.createContext<ContextProps>({} as ContextProps);

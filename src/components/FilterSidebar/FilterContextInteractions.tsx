@@ -96,11 +96,11 @@ const useFilterContextInteractions = () => {
                     },
                 });
             },
-            setMinimumPrice: (minimumPrice: number) => {
+            setMaximumPrice: (maximumPrice: number) => {
                 dispatch({
-                    type: FilterAction.SET_MINIMUM_PRICE,
+                    type: FilterAction.SET_MAXIMUM_PRICE,
                     payload: {
-                        minimumPrice,
+                        maximumPrice,
                     },
                 });
             },

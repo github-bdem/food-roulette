@@ -107,7 +107,12 @@ function PreferencesMenu() {
                     </details>
                 </li>
                 <li>
-                    <a>About</a>
+                    <a
+                        href="https://github.com/github-bdem/food-roulette"
+                        target="blank"
+                    >
+                        About
+                    </a>
                 </li>
             </ul>
         </div>

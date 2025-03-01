@@ -62,6 +62,7 @@ function ResultsCard({ gmapsLocation }: ResultsCardProps) {
             )}
             <div className="card-body">
                 <h2 className="card-title">{displayName}</h2>
+                <button className="btn btn-accent mr-2">Show On Map</button>
                 <div className="flex flex-row justify-between">
                     <div>About {approximateTimeToWalk.toFixed(0)} min walk</div>
                     <div>{approximateDistance.toFixed(2)} km</div>

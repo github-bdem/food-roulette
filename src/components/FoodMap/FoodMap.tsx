@@ -8,15 +8,12 @@ import {
     MapEvent,
     Pin,
 } from "@vis.gl/react-google-maps";
-import {
-    FoodMapAction,
-    useFoodMapContext,
-    latLngPosition,
-} from "./FoodMapContext";
+import { useFoodMapContext, latLngPosition } from "./FoodMapContext";
 import computeDistanceBetweenLatLng from "./ComputeDistanceBetweenLatLng";
 import convertGmapsLatLngToLatLng from "./ConvertGmapsLatLngToLatLng";
 import { useFilterContext } from "../FilterSidebar/FiltersContext";
 import useFetchFoodMapLocations from "./FetchFoodMapLocations";
+import useFoodMapContextInteractions from "./FoodMapContextInteractions";
 
 const minimumCenterDeltaToTriggerUpdate = 2; // Delta is expressed in km
 const minimumZoomLevelDeltaToTriggerUpdate = 2;
@@ -29,7 +26,6 @@ interface ShouldFetchNewPizzaLocationsProps {
 function FoodMap() {
     const foodMapContext = useFoodMapContext();
     const foodMapState = foodMapContext.state;
-    const foodMapDispatch = foodMapContext.dispatch;
 
     const { center, zoom, lastUpdatedCenter, lastUpdatedZoom, foodLocations } =
         foodMapState;
@@ -40,6 +36,9 @@ function FoodMap() {
     const { updateOnMapMove } = filterState;
 
     const { fetchFoodLocations } = useFetchFoodMapLocations();
+
+    const { setMapCenter, setMapCenterAndZoom } =
+        useFoodMapContextInteractions();
 
     useEffect(() => {
         const geolocationOptions = {
@@ -52,17 +51,14 @@ function FoodMap() {
                 lat: pos.coords.latitude,
                 lng: pos.coords.longitude,
             } as latLngPosition;
-            foodMapDispatch({
-                type: FoodMapAction.SET_MAP_CAMERA_VALUES,
-                payload: { center },
-            });
+            setMapCenter(center);
         };
         navigator.geolocation.getCurrentPosition(
             successFunction,
             () => null,
             geolocationOptions,
         );
-    }, [foodMapDispatch]);
+    }, [setMapCenter]);
 
     const shouldFetchNewFoodLocations = ({
         newCenter,
@@ -96,10 +92,7 @@ function FoodMap() {
 
     const handleCameraChange = (ev: MapCameraChangedEvent) => {
         const { center, zoom } = ev.detail;
-        foodMapDispatch({
-            type: FoodMapAction.SET_MAP_CAMERA_VALUES,
-            payload: { center, zoom },
-        });
+        setMapCenterAndZoom(center, zoom);
     };
 
     const onTilesLoaded = (ev: MapEvent) => {
@@ -138,7 +131,7 @@ function FoodMap() {
     const handleFoodLocationMouseOver = (id: string) => {
         const cardElement = document.getElementById(`${id}`);
         if (cardElement) {
-            cardElement.scrollIntoView({ behavior: "smooth" });
+            cardElement.scrollIntoView({ behavior: "smooth", block: "center" });
         }
     };
 
@@ -201,7 +194,7 @@ function FoodMap() {
                         <AdvancedMarker
                             key={location.id}
                             position={convertedLocationCenter}
-                            onMouseEnter={() =>
+                            onClick={() =>
                                 handleFoodLocationMouseOver(location.id)
                             }
                         ></AdvancedMarker>

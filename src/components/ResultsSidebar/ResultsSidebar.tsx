@@ -8,7 +8,7 @@ function ResultsSidebar() {
 
     return (
         <div className="flex w-full flex-col">
-            <div className="flex flex-col gap-3 overflow-y-scroll p-3">
+            <div className="flex flex-col gap-3 p-3">
                 {foodLocations?.map(
                     (item: google.maps.places.Place, index: number) => (
                         <ResultsCard

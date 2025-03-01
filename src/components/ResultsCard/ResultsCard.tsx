@@ -6,6 +6,10 @@ interface ResultsCardProps {
     gmapsLocation: google.maps.places.Place;
 }
 
+const upperFirst = (str: string): string => {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+};
+
 function ResultsCard({ gmapsLocation }: ResultsCardProps) {
     const { state } = useFoodMapContext();
     const { center } = state;
@@ -41,10 +45,14 @@ function ResultsCard({ gmapsLocation }: ResultsCardProps) {
         : 0;
 
     return (
-        <div className="card bg-base-100 shadow-sm">
-            {hasPhotos ? (
-                <figure>
-                    <img className="hidden md:block" src={photoUrl ?? ""} />
+        <div className="card bg-base-100 shadow-md">
+            {hasPhotos && photoUrl ? (
+                <figure className="h-60">
+                    <img
+                        className="block"
+                        src={photoUrl}
+                        alt={displayName ?? "establishment"}
+                    />
                 </figure>
             ) : (
                 <div className="bg-neutral text-neutral-content w-24 rounded-full">
@@ -57,70 +65,47 @@ function ResultsCard({ gmapsLocation }: ResultsCardProps) {
                     <div>About {approximateTimeToWalk.toFixed(0)} min walk</div>
                     <div>{approximateDistance.toFixed(2)} km</div>
                 </div>
-                <div className="stats stats-horizontal">
-                    <div className="stat">
-                        <div className="stat-title">Rating</div>
-                        <div className="stat-value">{rating}/5</div>
-
-                        {userRatingCount ? (
-                            <div className="stat-desc">
-                                {new Intl.NumberFormat("en-US").format(
-                                    userRatingCount,
-                                )}{" "}
-                                reviews
-                            </div>
-                        ) : null}
+                {priceLevel ? (
+                    <div>Price Level: {upperFirst(priceLevel)}</div>
+                ) : null}
+                {userRatingCount && rating ? (
+                    <div>
+                        Rating: {rating} / 5 (
+                        {new Intl.NumberFormat("en-US").format(userRatingCount)}{" "}
+                        reviews)
                     </div>
-
-                    {priceLevel ? (
-                        <div className="stat">
-                            <div className="stat-title">Price</div>
-                            <div className="stat-value">
-                                <div className="rating">{priceLevel}/4</div>
-                            </div>
-                        </div>
-                    ) : null}
-                </div>
-                <div className="collapse-plus collapse">
-                    <input type="radio" name="my-accordion-3" />
-                    <div className="collapse-title font-semibold">
-                        More Information
+                ) : null}
+                {hasDelivery !== undefined ? (
+                    <div>Delivery Available: {hasDelivery ? "Yes" : "No"}</div>
+                ) : null}
+                {isReservable !== undefined ? (
+                    <div>
+                        Reservations Available: {isReservable ? "Yes" : "No"}
                     </div>
-                    <div className="collapse-content w-full text-end">
-                        {/* {isOpenNow ? (
-                            <div className="flex flex-row items-center justify-end">
-                                <div className="pr-2">Open Now</div>
-                                <div className="status status-success animate-bounce" />
-                            </div>
-                        ) : (
-                            <div className="flex flex-row items-center justify-end">
-                                <div className="pr-2">Closed</div>
-                                <div className="status status-error animate-bounce" />
-                            </div>
-                        )} */}
-                        {websiteURI ? (
-                            <div>
-                                <a className="link" href={websiteURI}>
-                                    {websiteURI}
-                                </a>
-                            </div>
-                        ) : null}
-                        <div>
-                            <a className="link" href="tel:1234567890">
-                                Phone: {nationalPhoneNumber}
-                            </a>
-                        </div>
-                        <div>Address: {formattedAddress}</div>
-
-                        {googleMapsURI ? (
-                            <div>
-                                <a className="link" href={googleMapsURI}>
-                                    More Info on Google
-                                </a>
-                            </div>
-                        ) : null}
+                ) : null}
+                {hasTakeout !== undefined ? (
+                    <div>Takeout Available: {hasTakeout ? "Yes" : "No"}</div>
+                ) : null}
+                <div className="divider" />
+                {nationalPhoneNumber ? (
+                    <div>
+                        <a className="link" href={`tel:${nationalPhoneNumber}`}>
+                            {nationalPhoneNumber}
+                        </a>
                     </div>
-                </div>
+                ) : null}
+                {formattedAddress && googleMapsURI ? (
+                    <a className="link" href={googleMapsURI}>
+                        {formattedAddress}
+                    </a>
+                ) : null}
+                {websiteURI ? (
+                    <div>
+                        <a className="link truncate" href={websiteURI}>
+                            Website Link
+                        </a>
+                    </div>
+                ) : null}
             </div>
         </div>
     );

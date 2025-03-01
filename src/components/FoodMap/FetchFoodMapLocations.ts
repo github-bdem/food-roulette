@@ -95,7 +95,7 @@ const useFetchFoodMapLocations = () => {
                         if (filterState.maximumPrice > 1) {
                             nearbyPlaces = nearbyPlaces.filter((place) =>
                                 place.priceLevel
-                                    ? foodPriceMapping[place.priceLevel] >=
+                                    ? foodPriceMapping[place.priceLevel] <=
                                       filterState.maximumPrice
                                     : true,
                             );

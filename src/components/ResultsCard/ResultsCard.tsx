@@ -14,7 +14,6 @@ function ResultsCard({ gmapsLocation }: ResultsCardProps) {
     const {
         displayName,
         photos,
-        // regularOpeningHours
         location,
         rating,
         userRatingCount,
@@ -23,6 +22,9 @@ function ResultsCard({ gmapsLocation }: ResultsCardProps) {
         nationalPhoneNumber,
         formattedAddress,
         googleMapsURI,
+        hasDelivery,
+        isReservable,
+        hasTakeout,
     } = gmapsLocation;
 
     const hasPhotos = photos && photos.length > 0;

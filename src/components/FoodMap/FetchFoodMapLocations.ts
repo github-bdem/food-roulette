@@ -64,6 +64,9 @@ const useFetchFoodMapLocations = () => {
                             "nationalPhoneNumber",
                             "formattedAddress",
                             "googleMapsURI",
+                            "hasDelivery",
+                            "isReservable",
+                            "hasTakeout",
                         ],
                         locationRestriction: {
                             center: foodMapState.center,
@@ -95,6 +98,30 @@ const useFetchFoodMapLocations = () => {
                                     ? foodPriceMapping[place.priceLevel] >=
                                       filterState.maximumPrice
                                     : true,
+                            );
+                        }
+
+                        if (filterState.includeReservationsAvailable) {
+                            nearbyPlaces = nearbyPlaces.filter(
+                                (place) => place.isReservable,
+                            );
+                        }
+
+                        if (filterState.includeDeliveryAvailable) {
+                            nearbyPlaces = nearbyPlaces.filter(
+                                (place) => place.hasDelivery,
+                            );
+                        }
+
+                        if (filterState.includeReservationsAvailable) {
+                            nearbyPlaces = nearbyPlaces.filter(
+                                (place) => place.isReservable,
+                            );
+                        }
+
+                        if (filterState.includeTakeawayAvailable) {
+                            nearbyPlaces = nearbyPlaces.filter(
+                                (place) => place.hasTakeout,
                             );
                         }
 

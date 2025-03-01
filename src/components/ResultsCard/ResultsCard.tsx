@@ -29,6 +29,7 @@ function ResultsCard({ gmapsLocation }: ResultsCardProps) {
         hasDelivery,
         isReservable,
         hasTakeout,
+        id,
     } = gmapsLocation;
 
     const hasPhotos = photos && photos.length > 0;
@@ -45,7 +46,7 @@ function ResultsCard({ gmapsLocation }: ResultsCardProps) {
         : 0;
 
     return (
-        <div className="card bg-base-100 shadow-md">
+        <div className="card bg-base-100 shadow-md" id={`${id}`}>
             {hasPhotos && photoUrl ? (
                 <figure className="h-60">
                     <img

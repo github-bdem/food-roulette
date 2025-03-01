@@ -135,13 +135,20 @@ function FoodMap() {
         }
     };
 
+    const handleFoodLocationMouseOver = (id: string) => {
+        const cardElement = document.getElementById(`${id}`);
+        if (cardElement) {
+            cardElement.scrollIntoView({ behavior: "smooth" });
+        }
+    };
+
     return (
         <Map
             center={center}
             zoom={zoom}
             onCameraChanged={handleCameraChange}
             onTilesLoaded={onTilesLoaded}
-            mapId="DEMO_MAP_ID" //TODO: REPLACE BEFORE DEPLOY
+            mapId="FOOD_ROULETTE_FOOD_MAP"
             zoomControlOptions={{
                 position: ControlPosition.TOP_LEFT,
             }}
@@ -150,8 +157,9 @@ function FoodMap() {
             streetViewControlOptions={{
                 position: ControlPosition.TOP_LEFT,
             }}
-            keyboardShortcuts={false}
+            keyboardShortcuts={true}
             clickableIcons={false}
+            controlSize={32}
             styles={[
                 // TODO: This does not seem to work??
                 // might need to manually set styles if this library is busted:
@@ -176,9 +184,9 @@ function FoodMap() {
                     Filters
                 </label>
             </MapControl>
-            <MapControl position={ControlPosition.RIGHT_BOTTOM}>
+            <MapControl position={ControlPosition.BOTTOM_CENTER}>
                 <button
-                    className="btn btn-primary mr-4 mb-2 p-4"
+                    className="btn btn-primary mb-5"
                     onClick={handleNewSearchClick}
                 >
                     Search This Area
@@ -193,13 +201,16 @@ function FoodMap() {
                         <AdvancedMarker
                             key={location.id}
                             position={convertedLocationCenter}
+                            onMouseEnter={() =>
+                                handleFoodLocationMouseOver(location.id)
+                            }
                         ></AdvancedMarker>
                     );
                 } else {
                     return null;
                 }
             })}
-            <AdvancedMarker position={center}>
+            <AdvancedMarker position={lastUpdatedCenter}>
                 <Pin
                     background={"#0f9d58"}
                     borderColor={"#006425"}

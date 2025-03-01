@@ -27,7 +27,6 @@ const useFetchFoodMapLocations = () => {
     const fetchFoodMapLocationActions = useMemo(
         () => ({
             fetchFoodLocations: async () => {
-                console.log("calling");
                 if (
                     placesLib &&
                     foodMapState.center &&
@@ -67,6 +66,7 @@ const useFetchFoodMapLocations = () => {
                             "hasDelivery",
                             "isReservable",
                             "hasTakeout",
+                            "id",
                         ],
                         locationRestriction: {
                             center: foodMapState.center,
@@ -77,7 +77,6 @@ const useFetchFoodMapLocations = () => {
                             google.maps.places.SearchNearbyRankPreference
                                 .DISTANCE,
                     };
-                    console.log("making request", request);
                     const nearbyPlacesResult =
                         await placesLib.Place.searchNearby(request);
 

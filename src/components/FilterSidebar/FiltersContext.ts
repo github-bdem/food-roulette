@@ -168,7 +168,7 @@ const initialFilterState = {
     includeDeliveryAvailable: false,
     includeTakeawayAvailable: false,
     minimumRating: 3,
-    maximumPrice: 2,
+    maximumPrice: 4,
 };
 
 const FilterContext = React.createContext<ContextProps>({} as ContextProps);

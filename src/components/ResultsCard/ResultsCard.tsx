@@ -1,6 +1,7 @@
 import computeDistanceBetweenLatLng from "../FoodMap/ComputeDistanceBetweenLatLng";
 import convertGmapsLatLngToLatLng from "../FoodMap/ConvertGmapsLatLngToLatLng";
 import { useFoodMapContext } from "../FoodMap/FoodMapContext";
+import useFoodMapContextInteractions from "../FoodMap/FoodMapContextInteractions";
 
 interface ResultsCardProps {
     gmapsLocation: google.maps.places.Place;
@@ -44,6 +45,13 @@ function ResultsCard({ gmapsLocation }: ResultsCardProps) {
     const approximateTimeToWalk = approximateDistance
         ? approximateDistance * 15
         : 0;
+    const { setMapCenterAndZoom } = useFoodMapContextInteractions();
+
+    const centerOnLocation = () => {
+        if (convertedLocationCenter) {
+            setMapCenterAndZoom(convertedLocationCenter, 18);
+        }
+    };
 
     return (
         <div className="card bg-base-100 shadow-md" id={`${id}`}>
@@ -62,7 +70,12 @@ function ResultsCard({ gmapsLocation }: ResultsCardProps) {
             )}
             <div className="card-body">
                 <h2 className="card-title">{displayName}</h2>
-                <button className="btn btn-accent mr-2">Show On Map</button>
+                <button
+                    className="btn btn-accent mr-2"
+                    onClick={centerOnLocation}
+                >
+                    Show On Map
+                </button>
                 <div className="flex flex-row justify-between">
                     <div>About {approximateTimeToWalk.toFixed(0)} min walk</div>
                     <div>{approximateDistance.toFixed(2)} km</div>

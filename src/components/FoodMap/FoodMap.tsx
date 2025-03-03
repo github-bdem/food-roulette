@@ -132,7 +132,7 @@ function FoodMap() {
         }
     };
 
-    const handleNewSearchClick = () => {
+    const handleSearchThisAreaClick = () => {
         try {
             fetchFoodLocations().catch((error) => {
                 console.error("Error fetching food locations", error);
@@ -142,33 +142,81 @@ function FoodMap() {
         }
     };
 
-    const handleFoodLocationClick = (id: string) => {
+    const handlePickForMeClick = () => {
+        if (foodLocations?.length) {
+            pickRandomLocation();
+        } else {
+            try {
+                fetchFoodLocations()
+                    .then(() => pickRandomLocation())
+                    .catch((error) => {
+                        console.error("Error fetching food locations", error);
+                    });
+            } catch (error) {
+                console.error("Error handling new search click", error);
+            }
+        }
+    };
+
+    const scrollCardIntoView = (id: string) => {
         const cardElement = document.getElementById(`${id}`);
         if (cardElement) {
             cardElement.scrollIntoView({ behavior: "smooth", block: "center" });
-            setFocusedLocationId(id);
+        }
+    };
+
+    const handleFoodLocationClick = (
+        id: string,
+        convertedLocationCenter: latLngPosition | null,
+    ) => {
+        scrollCardIntoView(id);
+        setFocusedLocationId(id);
+        if (convertedLocationCenter) {
+            setMapCenterAndZoom(convertedLocationCenter, 18);
         }
     };
 
     const handleFoodLocationMouseEnter = (id: string) => {
+        scrollCardIntoView(id);
         setHoveredLocationId(id);
-        const cardElement = document.getElementById(`${id}`);
-        if (cardElement) {
-            cardElement.scrollIntoView({ behavior: "smooth", block: "center" });
-        }
     };
 
     const handleFoodLocationMouseLeave = () => {
         setHoveredLocationId("");
     };
 
-    const generateFoodLocationStyle = (id: string) => {
+    const generateFoodLocationStyle = (
+        id: string,
+        includeAnimation?: boolean,
+    ) => {
         if (id === focusedLocationId) {
-            return "marker-primary";
+            return `marker-primary ${includeAnimation ? "animate-ping absolute" : "relative"}`;
         } else if (id === hoveredLocationId) {
-            return "marker-accent";
+            return `marker-accent ${includeAnimation ? "animate-ping absolute" : "relative"}`;
         } else {
-            return "marker-secondary";
+            return `marker-secondary ${includeAnimation ? "absolute" : "relative"}`;
+        }
+    };
+
+    const pickRandomLocation = () => {
+        if (foodLocations) {
+            const randomlySelectedLocationIndex = Math.floor(
+                Math.random() * foodLocations.length,
+            );
+            const randomlySelectedLocation =
+                foodLocations[randomlySelectedLocationIndex];
+
+            const { id, location } = randomlySelectedLocation;
+
+            if (location) {
+                const convertedLocationCenter =
+                    convertGmapsLatLngToLatLng(location);
+                if (convertedLocationCenter) {
+                    setMapCenterAndZoom(convertedLocationCenter, 18);
+                }
+            }
+            scrollCardIntoView(id);
+            setFocusedLocationId(id);
         }
     };
 
@@ -199,12 +247,20 @@ function FoodMap() {
                     Filters
                 </label>
             </MapControl>
+            <MapControl position={ControlPosition.TOP_CENTER}>
+                <button
+                    className="btn btn-accent mt-5"
+                    onClick={handleSearchThisAreaClick}
+                >
+                    Search This Area
+                </button>
+            </MapControl>
             <MapControl position={ControlPosition.BOTTOM_CENTER}>
                 <button
                     className="btn btn-primary mb-5"
-                    onClick={handleNewSearchClick}
+                    onClick={handlePickForMeClick}
                 >
-                    Search This Area
+                    Pick For Me
                 </button>
             </MapControl>
             {foodLocations?.map((location: google.maps.places.Place) => {
@@ -220,8 +276,19 @@ function FoodMap() {
                             onMouseLeave={handleFoodLocationMouseLeave}
                             key={location.id}
                             position={convertedLocationCenter}
-                            onClick={() => handleFoodLocationClick(location.id)}
+                            onClick={() =>
+                                handleFoodLocationClick(
+                                    location.id,
+                                    convertedLocationCenter,
+                                )
+                            }
                         >
+                            <div
+                                className={generateFoodLocationStyle(
+                                    location.id,
+                                    true,
+                                )}
+                            />
                             <div
                                 className={generateFoodLocationStyle(
                                     location.id,
@@ -233,6 +300,9 @@ function FoodMap() {
                     return null;
                 }
             })}
+            <AdvancedMarker position={lastUpdatedCenter}>
+                <div className="text-3xl">+</div>
+            </AdvancedMarker>
             {lastUpdatedCenter && lastUpdatedRadius ? (
                 <Circle
                     center={lastUpdatedCenter}

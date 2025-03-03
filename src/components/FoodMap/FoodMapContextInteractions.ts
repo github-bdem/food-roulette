@@ -16,7 +16,7 @@ const useFoodMapContextInteractions = () => {
                     payload: { center },
                 });
             },
-            setMapCenterAndZoom: (center: latLngPosition, zoom?: number) => {
+            setMapCenterAndZoom: (center?: latLngPosition, zoom?: number) => {
                 dispatch({
                     type: FoodMapAction.SET_MAP_CAMERA_VALUES,
                     payload: { center, zoom },

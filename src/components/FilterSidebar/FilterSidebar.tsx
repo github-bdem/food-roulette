@@ -1,3 +1,4 @@
+import useFetchFoodMapLocations from "../FoodMap/FetchFoodMapLocations";
 import AdditionalFilters from "./components/AdditionalFilters";
 import GmapsFoodTypeFilterSection from "./components/GmapsFoodTypeFilterSection";
 import MaxDistanceFilter from "./components/MaxDistanceFilter";
@@ -12,10 +13,22 @@ import {
 } from "./GmapsFoodTypeFilterSections";
 
 function FilterSidebar() {
+    const { fetchFoodLocations } = useFetchFoodMapLocations();
+
+    const handleApplyClick = () => {
+        try {
+            fetchFoodLocations().catch((error) => {
+                console.error("Error fetching food locations", error);
+            });
+        } catch (error) {
+            console.error("Error handling new search click", error);
+        }
+    };
+
     return (
         <div className="bg-base-200 text-base-content h-full w-full md:w-[450px]">
             <div className="navbar bg-secondary navbar-height flex justify-between p-4 shadow-sm">
-                <div>Filters</div>
+                <h2 className="text-lg font-semibold">Filters</h2>
                 <label
                     htmlFor="filter-drawer"
                     className="drawer-button btn mr-4"
@@ -53,9 +66,9 @@ function FilterSidebar() {
                 <label
                     htmlFor="filter-drawer"
                     className="drawer-button btn btn-primary mr-4"
-                    onClick={() => window.alert("blah")}
+                    onClick={handleApplyClick}
                 >
-                    Reroll
+                    Apply
                 </label>
             </div>
         </div>

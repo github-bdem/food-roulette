@@ -19,6 +19,7 @@ function PreferencesMenu() {
                                     <input
                                         type="radio"
                                         name="theme-radios"
+                                        defaultChecked
                                         className="radio radio-sm theme-controller"
                                         value="foodie"
                                     />
@@ -91,51 +92,16 @@ function PreferencesMenu() {
                                     Pastel
                                 </label>
                             </li>
-                            <li>
-                                <label className="flex cursor-pointer items-center gap-2">
-                                    <input
-                                        type="radio"
-                                        name="theme-radios"
-                                        className="radio radio-sm theme-controller"
-                                        value="cmyk"
-                                    />
-                                    CMYK
-                                </label>
-                            </li>
                         </ul>
                     </details>
                 </li>
                 <li>
-                    <details>
-                        <summary>Handedness</summary>
-                        <ul>
-                            <li>
-                                <label className="flex cursor-pointer items-center gap-2">
-                                    <input
-                                        type="radio"
-                                        name="handedness-radios"
-                                        className="radio radio-sm"
-                                        value="right"
-                                    />
-                                    Right
-                                </label>
-                            </li>
-                            <li>
-                                <label className="flex cursor-pointer items-center gap-2">
-                                    <input
-                                        type="radio"
-                                        name="handedness-radios"
-                                        className="radio radio-sm"
-                                        value="left"
-                                    />
-                                    Left
-                                </label>
-                            </li>
-                        </ul>
-                    </details>
-                </li>
-                <li>
-                    <a>About</a>
+                    <a
+                        href="https://github.com/github-bdem/food-roulette"
+                        target="blank"
+                    >
+                        About
+                    </a>
                 </li>
             </ul>
         </div>

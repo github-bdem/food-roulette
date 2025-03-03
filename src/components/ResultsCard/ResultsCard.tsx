@@ -1,20 +1,31 @@
 import computeDistanceBetweenLatLng from "../FoodMap/ComputeDistanceBetweenLatLng";
 import convertGmapsLatLngToLatLng from "../FoodMap/ConvertGmapsLatLngToLatLng";
 import { useFoodMapContext } from "../FoodMap/FoodMapContext";
+import useFoodMapContextInteractions from "../FoodMap/FoodMapContextInteractions";
 
 interface ResultsCardProps {
     gmapsLocation: google.maps.places.Place;
 }
 
+const upperFirst = (str: string): string => {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+};
+
 function ResultsCard({ gmapsLocation }: ResultsCardProps) {
     const { state } = useFoodMapContext();
-    const { center } = state;
+    const { lastUpdatedCenter } = state;
 
-    // ANYTHING THAT LISTS NEEDING A GET DETAILS REQUEST NEEDS TO BE HIDDEN UNDER THE MORE DROPDOWN
+    const foodMapContext = useFoodMapContext();
+    const foodMapState = foodMapContext.state;
+
+    const { focusedLocationId, hoveredLocationId } = foodMapState;
+
+    const { setMapCenterAndZoom, setFocusedLocationId, setHoveredLocationId } =
+        useFoodMapContextInteractions();
+
     const {
         displayName,
         photos,
-        // regularOpeningHours
         location,
         rating,
         userRatingCount,
@@ -23,102 +34,143 @@ function ResultsCard({ gmapsLocation }: ResultsCardProps) {
         nationalPhoneNumber,
         formattedAddress,
         googleMapsURI,
+        hasDelivery,
+        isReservable,
+        hasTakeout,
+        id,
+        regularOpeningHours,
     } = gmapsLocation;
 
     const hasPhotos = photos && photos.length > 0;
     const photoUrl = hasPhotos ? photos[0].getURI() : null;
-    const shouldShowDistance = location && center;
+    const shouldShowDistance = location && lastUpdatedCenter;
     const convertedLocationCenter =
         location && convertGmapsLatLngToLatLng(location);
     const approximateDistance =
         shouldShowDistance && convertedLocationCenter
-            ? computeDistanceBetweenLatLng(center, convertedLocationCenter)
+            ? computeDistanceBetweenLatLng(
+                  lastUpdatedCenter,
+                  convertedLocationCenter,
+              )
             : 0;
     const approximateTimeToWalk = approximateDistance
         ? approximateDistance * 15
         : 0;
 
+    const centerOnLocation = () => {
+        if (convertedLocationCenter) {
+            setMapCenterAndZoom(convertedLocationCenter, 18);
+            const cardElement = document.getElementById(`${id}`);
+            if (cardElement) {
+                cardElement.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center",
+                });
+                setFocusedLocationId(id);
+            }
+        }
+    };
+
+    const currentDate = new Date();
+    const currentDay = currentDate.getDay();
+    const currentDayHours =
+        regularOpeningHours?.weekdayDescriptions[currentDay].split(": ")[1];
+
+    const generateCardBorderStyle = (id: string) => {
+        if (id === focusedLocationId) {
+            return "outline-primary outline-2 outline-offset-2";
+        } else if (id === hoveredLocationId) {
+            return "outline-accent outline-2 outline-offset-2";
+        } else {
+            return "";
+        }
+    };
+
     return (
-        <div className="card bg-base-100 shadow-sm">
-            {hasPhotos ? (
-                <figure>
-                    <img className="hidden md:block" src={photoUrl ?? ""} />
+        <div
+            onMouseEnter={() => {
+                setHoveredLocationId(id);
+            }}
+            onMouseLeave={() => setHoveredLocationId("")}
+            className={`card bg-base-100 shadow-md ${generateCardBorderStyle(id)}`}
+            id={`${id}`}
+        >
+            {hasPhotos && photoUrl ? (
+                <figure className="h-60">
+                    <img
+                        className="block"
+                        src={photoUrl}
+                        alt={displayName ?? "establishment"}
+                    />
                 </figure>
             ) : (
                 <div className="bg-neutral text-neutral-content w-24 rounded-full">
                     <span className="text-3xl">D</span>
                 </div>
             )}
-            <div className="card-body">
+            <div className="card-body overflow-hidden">
                 <h2 className="card-title">{displayName}</h2>
-                <div className="flex flex-row justify-between">
-                    <div>About {approximateTimeToWalk.toFixed(0)} min walk</div>
-                    <div>{approximateDistance.toFixed(2)} km</div>
-                </div>
-                <div className="stats stats-horizontal">
-                    <div className="stat">
-                        <div className="stat-title">Rating</div>
-                        <div className="stat-value">{rating}/5</div>
-
-                        {userRatingCount ? (
-                            <div className="stat-desc">
-                                {new Intl.NumberFormat("en-US").format(
-                                    userRatingCount,
-                                )}{" "}
-                                reviews
-                            </div>
-                        ) : null}
+                <button
+                    className="btn btn-accent mr-2"
+                    onClick={centerOnLocation}
+                >
+                    Show On Map
+                </button>
+                {currentDayHours ? (
+                    <p>Todays Hours: {currentDayHours}</p>
+                ) : null}
+                {approximateTimeToWalk && approximateDistance ? (
+                    <div>
+                        About {approximateTimeToWalk.toFixed(0)} min walk (
+                        {approximateDistance.toFixed(2)} km)
                     </div>
-
-                    {priceLevel ? (
-                        <div className="stat">
-                            <div className="stat-title">Price</div>
-                            <div className="stat-value">
-                                <div className="rating">{priceLevel}/4</div>
-                            </div>
-                        </div>
-                    ) : null}
-                </div>
-                <div className="collapse-plus collapse">
-                    <input type="radio" name="my-accordion-3" />
-                    <div className="collapse-title font-semibold">
-                        More Information
+                ) : null}
+                {priceLevel ? (
+                    <div>Price Level: {upperFirst(priceLevel)}</div>
+                ) : null}
+                {userRatingCount && rating ? (
+                    <div>
+                        Rating: {rating} / 5 (
+                        {new Intl.NumberFormat("en-US").format(userRatingCount)}{" "}
+                        reviews)
                     </div>
-                    <div className="collapse-content w-full text-end">
-                        {/* {isOpenNow ? (
-                            <div className="flex flex-row items-center justify-end">
-                                <div className="pr-2">Open Now</div>
-                                <div className="status status-success animate-bounce" />
-                            </div>
-                        ) : (
-                            <div className="flex flex-row items-center justify-end">
-                                <div className="pr-2">Closed</div>
-                                <div className="status status-error animate-bounce" />
-                            </div>
-                        )} */}
-                        {websiteURI ? (
-                            <div>
-                                <a className="link" href={websiteURI}>
-                                    {websiteURI}
-                                </a>
-                            </div>
-                        ) : null}
-                        <div>
-                            <a className="link" href="tel:1234567890">
-                                Phone: {nationalPhoneNumber}
-                            </a>
-                        </div>
-                        <div>Address: {formattedAddress}</div>
-
-                        {googleMapsURI ? (
-                            <div>
-                                <a className="link" href={googleMapsURI}>
-                                    More Info on Google
-                                </a>
-                            </div>
-                        ) : null}
+                ) : null}
+                {hasDelivery !== undefined ? (
+                    <div>Delivery Available: {hasDelivery ? "Yes" : "No"}</div>
+                ) : null}
+                {isReservable !== undefined ? (
+                    <div>
+                        Reservations Available: {isReservable ? "Yes" : "No"}
                     </div>
-                </div>
+                ) : null}
+                {hasTakeout !== undefined ? (
+                    <div>Takeout Available: {hasTakeout ? "Yes" : "No"}</div>
+                ) : null}
+                <div className="divider" />
+                {formattedAddress ? (
+                    <div>
+                        <a className="truncate">{formattedAddress}</a>
+                    </div>
+                ) : null}
+                {nationalPhoneNumber ? (
+                    <div>
+                        <a className="link" href={`tel:${nationalPhoneNumber}`}>
+                            {nationalPhoneNumber}
+                        </a>
+                    </div>
+                ) : null}
+                {websiteURI ? (
+                    <div>
+                        <a className="link truncate" href={websiteURI}>
+                            Website
+                        </a>
+                    </div>
+                ) : null}
+                {googleMapsURI ? (
+                    <a className="link" href={googleMapsURI}>
+                        View On Google
+                    </a>
+                ) : null}
             </div>
         </div>
     );

@@ -15,7 +15,14 @@ function ResultsCard({ gmapsLocation }: ResultsCardProps) {
     const { state } = useFoodMapContext();
     const { lastUpdatedCenter } = state;
 
-    // ANYTHING THAT LISTS NEEDING A GET DETAILS REQUEST NEEDS TO BE HIDDEN UNDER THE MORE DROPDOWN
+    const foodMapContext = useFoodMapContext();
+    const foodMapState = foodMapContext.state;
+
+    const { focusedLocationId, hoveredLocationId } = foodMapState;
+
+    const { setMapCenterAndZoom, setFocusedLocationId, setHoveredLocationId } =
+        useFoodMapContextInteractions();
+
     const {
         displayName,
         photos,
@@ -49,11 +56,18 @@ function ResultsCard({ gmapsLocation }: ResultsCardProps) {
     const approximateTimeToWalk = approximateDistance
         ? approximateDistance * 15
         : 0;
-    const { setMapCenterAndZoom } = useFoodMapContextInteractions();
 
     const centerOnLocation = () => {
         if (convertedLocationCenter) {
             setMapCenterAndZoom(convertedLocationCenter, 18);
+            const cardElement = document.getElementById(`${id}`);
+            if (cardElement) {
+                cardElement.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center",
+                });
+                setFocusedLocationId(id);
+            }
         }
     };
 
@@ -63,7 +77,14 @@ function ResultsCard({ gmapsLocation }: ResultsCardProps) {
         regularOpeningHours?.weekdayDescriptions[currentDay].split(": ")[1];
 
     return (
-        <div className="card bg-base-100 shadow-md" id={`${id}`}>
+        <div
+            onMouseEnter={() => {
+                setHoveredLocationId(id);
+            }}
+            onMouseLeave={() => setHoveredLocationId("")}
+            className={`card bg-base-100 hover:outline-primary shadow-md hover:outline-2 hover:outline-offset-2 ${focusedLocationId === id || hoveredLocationId === id ? "outline-primary outline-2 outline-offset-2" : ""}`}
+            id={`${id}`}
+        >
             {hasPhotos && photoUrl ? (
                 <figure className="h-60">
                     <img
@@ -114,6 +135,11 @@ function ResultsCard({ gmapsLocation }: ResultsCardProps) {
                     <div>Takeout Available: {hasTakeout ? "Yes" : "No"}</div>
                 ) : null}
                 <div className="divider" />
+                {formattedAddress ? (
+                    <div>
+                        <a className="truncate">{formattedAddress}</a>
+                    </div>
+                ) : null}
                 {nationalPhoneNumber ? (
                     <div>
                         <a className="link" href={`tel:${nationalPhoneNumber}`}>
@@ -121,17 +147,17 @@ function ResultsCard({ gmapsLocation }: ResultsCardProps) {
                         </a>
                     </div>
                 ) : null}
-                {formattedAddress && googleMapsURI ? (
-                    <a className="link" href={googleMapsURI}>
-                        {formattedAddress}
-                    </a>
-                ) : null}
                 {websiteURI ? (
                     <div>
                         <a className="link truncate" href={websiteURI}>
-                            Website Link
+                            Website
                         </a>
                     </div>
+                ) : null}
+                {googleMapsURI ? (
+                    <a className="link" href={googleMapsURI}>
+                        View On Google
+                    </a>
                 ) : null}
             </div>
         </div>

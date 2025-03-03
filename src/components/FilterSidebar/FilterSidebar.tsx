@@ -28,7 +28,7 @@ function FilterSidebar() {
     return (
         <div className="bg-base-200 text-base-content h-full w-full md:w-[450px]">
             <div className="navbar bg-secondary navbar-height flex justify-between p-4 shadow-sm">
-                <div>Filters</div>
+                <h2 className="text-xl">Filters</h2>
                 <label
                     htmlFor="filter-drawer"
                     className="drawer-button btn mr-4"

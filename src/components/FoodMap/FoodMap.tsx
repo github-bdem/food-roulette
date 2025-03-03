@@ -6,6 +6,7 @@ import {
     MapCameraChangedEvent,
     MapControl,
     MapEvent,
+    Pin,
 } from "@vis.gl/react-google-maps";
 import { useFoodMapContext, latLngPosition } from "./FoodMapContext";
 import computeDistanceBetweenLatLng from "./ComputeDistanceBetweenLatLng";
@@ -34,6 +35,8 @@ function FoodMap() {
         lastUpdatedZoom,
         foodLocations,
         lastUpdatedRadius,
+        focusedLocationId,
+        hoveredLocationId,
     } = foodMapState;
 
     const filterContext = useFilterContext();
@@ -43,8 +46,12 @@ function FoodMap() {
 
     const { fetchFoodLocations } = useFetchFoodMapLocations();
 
-    const { setMapCenter, setMapCenterAndZoom } =
-        useFoodMapContextInteractions();
+    const {
+        setMapCenter,
+        setMapCenterAndZoom,
+        setFocusedLocationId,
+        setHoveredLocationId,
+    } = useFoodMapContextInteractions();
 
     useEffect(() => {
         const geolocationOptions = {
@@ -134,10 +141,33 @@ function FoodMap() {
         }
     };
 
-    const handleFoodLocationMouseOver = (id: string) => {
+    const handleFoodLocationClick = (id: string) => {
         const cardElement = document.getElementById(`${id}`);
         if (cardElement) {
             cardElement.scrollIntoView({ behavior: "smooth", block: "center" });
+            setFocusedLocationId(id);
+        }
+    };
+
+    const handleFoodLocationMouseEnter = (id: string) => {
+        setHoveredLocationId(id);
+        const cardElement = document.getElementById(`${id}`);
+        if (cardElement) {
+            cardElement.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+    };
+
+    const handleFoodLocaionMouseLeave = () => {
+        setHoveredLocationId("");
+    };
+
+    const generateFoodLocationColor = (id: string) => {
+        if (id === focusedLocationId) {
+            return "#034852";
+        } else if (id === hoveredLocationId) {
+            return "#a389";
+        } else {
+            return "#0f9d58";
         }
     };
 
@@ -159,21 +189,6 @@ function FoodMap() {
             keyboardShortcuts={true}
             clickableIcons={false}
             controlSize={32}
-            styles={[
-                // TODO: This does not seem to work??
-                // might need to manually set styles if this library is busted:
-                // https://github.com/Pham-Vincent/Equitable-Water-Solutions/issues/76
-                // https://developers.google.com/maps/documentation/javascript/examples/hiding-features#maps_hiding_features-javascript
-                {
-                    featureType: "poi.business",
-                    stylers: [{ visibility: "off" }],
-                },
-                {
-                    featureType: "transit",
-                    elementType: "labels.icon",
-                    stylers: [{ visibility: "off" }],
-                },
-            ]}
         >
             <MapControl position={ControlPosition.RIGHT_CENTER}>
                 <label
@@ -198,12 +213,22 @@ function FoodMap() {
                     );
                     return (
                         <AdvancedMarker
+                            onMouseEnter={() =>
+                                handleFoodLocationMouseEnter(location.id)
+                            }
+                            onMouseLeave={handleFoodLocaionMouseLeave}
                             key={location.id}
                             position={convertedLocationCenter}
-                            onClick={() =>
-                                handleFoodLocationMouseOver(location.id)
-                            }
-                        ></AdvancedMarker>
+                            onClick={() => handleFoodLocationClick(location.id)}
+                        >
+                            <Pin
+                                background={generateFoodLocationColor(
+                                    location.id,
+                                )}
+                                borderColor={"#006425"}
+                                glyphColor={"#60d98f"}
+                            />
+                        </AdvancedMarker>
                     );
                 } else {
                     return null;

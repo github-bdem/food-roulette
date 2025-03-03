@@ -2,7 +2,7 @@
 
 Bored and not sure what to eat? Food Roulette is a fun way to discover new foods around you. First specify a few options like maximum distance, cuisine type, or dietary restrictions. Then click "Pick For Me" and let the app do its magic! Enjoy your culinary adventure!
 
-![food roulette interface](https://raw.githubusercontent.com/github-bdem/food-roulette/master/public/food-roulette.png)
+![food roulette interface](https://github.com/github-bdem/food-roulette/blob/main/public/food-roulette.png?raw=true)
 
 ## History
 

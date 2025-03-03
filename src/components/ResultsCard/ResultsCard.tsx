@@ -111,7 +111,7 @@ function ResultsCard({ gmapsLocation }: ResultsCardProps) {
             <div className="card-body overflow-hidden">
                 <h2 className="card-title">{displayName}</h2>
                 <button
-                    className="btn btn-accent mr-2"
+                    className="btn btn-primary mr-2"
                     onClick={centerOnLocation}
                 >
                     Show On Map

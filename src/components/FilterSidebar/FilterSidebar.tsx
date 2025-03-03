@@ -1,4 +1,5 @@
 import useFetchFoodMapLocations from "../FoodMap/FetchFoodMapLocations";
+import useFoodMapContextInteractions from "../FoodMap/FoodMapContextInteractions";
 import AdditionalFilters from "./components/AdditionalFilters";
 import GmapsFoodTypeFilterSection from "./components/GmapsFoodTypeFilterSection";
 import MaxDistanceFilter from "./components/MaxDistanceFilter";
@@ -15,8 +16,11 @@ import {
 function FilterSidebar() {
     const { fetchFoodLocations } = useFetchFoodMapLocations();
 
+    const { setFocusedLocationId } = useFoodMapContextInteractions();
+
     const handleApplyClick = () => {
         try {
+            setFocusedLocationId("");
             fetchFoodLocations().catch((error) => {
                 console.error("Error fetching food locations", error);
             });

@@ -6,7 +6,6 @@ import {
     MapCameraChangedEvent,
     MapControl,
     MapEvent,
-    Pin,
 } from "@vis.gl/react-google-maps";
 import { useFoodMapContext, latLngPosition } from "./FoodMapContext";
 import computeDistanceBetweenLatLng from "./ComputeDistanceBetweenLatLng";
@@ -15,6 +14,8 @@ import { useFilterContext } from "../FilterSidebar/FiltersContext";
 import useFetchFoodMapLocations from "./FetchFoodMapLocations";
 import useFoodMapContextInteractions from "./FoodMapContextInteractions";
 import { Circle } from "./SearchAreaCircle/Circle";
+
+import "./FoodMap.css";
 
 const minimumCenterDeltaToTriggerUpdate = 2; // Delta is expressed in km
 const minimumZoomLevelDeltaToTriggerUpdate = 2;
@@ -157,17 +158,17 @@ function FoodMap() {
         }
     };
 
-    const handleFoodLocaionMouseLeave = () => {
+    const handleFoodLocationMouseLeave = () => {
         setHoveredLocationId("");
     };
 
-    const generateFoodLocationColor = (id: string) => {
+    const generateFoodLocationStyle = (id: string) => {
         if (id === focusedLocationId) {
-            return "#034852";
+            return "marker-primary";
         } else if (id === hoveredLocationId) {
-            return "#a389";
+            return "marker-accent";
         } else {
-            return "#0f9d58";
+            return "marker-secondary";
         }
     };
 
@@ -216,17 +217,15 @@ function FoodMap() {
                             onMouseEnter={() =>
                                 handleFoodLocationMouseEnter(location.id)
                             }
-                            onMouseLeave={handleFoodLocaionMouseLeave}
+                            onMouseLeave={handleFoodLocationMouseLeave}
                             key={location.id}
                             position={convertedLocationCenter}
                             onClick={() => handleFoodLocationClick(location.id)}
                         >
-                            <Pin
-                                background={generateFoodLocationColor(
+                            <div
+                                className={generateFoodLocationStyle(
                                     location.id,
                                 )}
-                                borderColor={"#006425"}
-                                glyphColor={"#60d98f"}
                             />
                         </AdvancedMarker>
                     );

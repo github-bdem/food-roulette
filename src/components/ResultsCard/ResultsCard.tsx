@@ -73,8 +73,18 @@ function ResultsCard({ gmapsLocation }: ResultsCardProps) {
 
     const currentDate = new Date();
     const currentDay = currentDate.getDay();
-    const currentDayHour =
+    const currentDayHours =
         regularOpeningHours?.weekdayDescriptions[currentDay].split(": ")[1];
+
+    const generateCardBorderStyle = (id: string) => {
+        if (id === focusedLocationId) {
+            return "outline-primary outline-2 outline-offset-2";
+        } else if (id === hoveredLocationId) {
+            return "outline-accent outline-2 outline-offset-2";
+        } else {
+            return "";
+        }
+    };
 
     return (
         <div
@@ -82,7 +92,7 @@ function ResultsCard({ gmapsLocation }: ResultsCardProps) {
                 setHoveredLocationId(id);
             }}
             onMouseLeave={() => setHoveredLocationId("")}
-            className={`card bg-base-100 hover:outline-primary shadow-md hover:outline-2 hover:outline-offset-2 ${focusedLocationId === id || hoveredLocationId === id ? "outline-primary outline-2 outline-offset-2" : ""}`}
+            className={`card bg-base-100 shadow-md ${generateCardBorderStyle(id)}`}
             id={`${id}`}
         >
             {hasPhotos && photoUrl ? (
@@ -98,7 +108,7 @@ function ResultsCard({ gmapsLocation }: ResultsCardProps) {
                     <span className="text-3xl">D</span>
                 </div>
             )}
-            <div className="card-body">
+            <div className="card-body overflow-hidden">
                 <h2 className="card-title">{displayName}</h2>
                 <button
                     className="btn btn-accent mr-2"
@@ -106,7 +116,9 @@ function ResultsCard({ gmapsLocation }: ResultsCardProps) {
                 >
                     Show On Map
                 </button>
-                {currentDayHour ? <p>Todays Hours: {currentDayHour}</p> : null}
+                {currentDayHours ? (
+                    <p>Todays Hours: {currentDayHours}</p>
+                ) : null}
                 {approximateTimeToWalk && approximateDistance ? (
                     <div>
                         About {approximateTimeToWalk.toFixed(0)} min walk (

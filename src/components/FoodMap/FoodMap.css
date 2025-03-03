@@ -1,0 +1,29 @@
+.marker-primary {
+    width: 24px;
+    height: 24px;
+    border-radius: 100%;
+    border-width: 2px;
+    border: 2px solid var(--color-neutral);
+    background-color: var(--color-primary);
+    z-index: 999;
+}
+
+.marker-secondary {
+    width: 24px;
+    height: 24px;
+    border-radius: 100%;
+    border-width: 2px;
+    border: 2px solid var(--color-neutral);
+    background-color: var(--color-secondary);
+    z-index: 997;
+}
+
+.marker-accent {
+    width: 24px;
+    height: 24px;
+    border-radius: 100%;
+    border-width: 2px;
+    border: 2px solid var(--color-neutral);
+    background-color: var(--color-accent);
+    z-index: 998;
+}

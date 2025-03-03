@@ -73,11 +73,11 @@ const useFetchFoodMapLocations = () => {
                         locationRestriction: {
                             center: foodMapState.center,
                             radius:
-                                (3218 * filterState.maxDistancePercent) / 100,
+                                (1610 * filterState.maxDistancePercent) / 100,
                         },
                         rankPreference:
                             google.maps.places.SearchNearbyRankPreference
-                                .DISTANCE,
+                                .POPULARITY,
                     };
                     const nearbyPlacesResult =
                         await placesLib.Place.searchNearby(request);

@@ -6,7 +6,6 @@ import {
     MapCameraChangedEvent,
     MapControl,
     MapEvent,
-    Pin,
 } from "@vis.gl/react-google-maps";
 import { useFoodMapContext, latLngPosition } from "./FoodMapContext";
 import computeDistanceBetweenLatLng from "./ComputeDistanceBetweenLatLng";
@@ -14,6 +13,7 @@ import convertGmapsLatLngToLatLng from "./ConvertGmapsLatLngToLatLng";
 import { useFilterContext } from "../FilterSidebar/FiltersContext";
 import useFetchFoodMapLocations from "./FetchFoodMapLocations";
 import useFoodMapContextInteractions from "./FoodMapContextInteractions";
+import { Circle } from "./SearchAreaCircle/Circle";
 
 const minimumCenterDeltaToTriggerUpdate = 2; // Delta is expressed in km
 const minimumZoomLevelDeltaToTriggerUpdate = 2;
@@ -203,13 +203,13 @@ function FoodMap() {
                     return null;
                 }
             })}
-            <AdvancedMarker position={lastUpdatedCenter}>
-                <Pin
-                    background={"#0f9d58"}
-                    borderColor={"#006425"}
-                    glyphColor={"#60d98f"}
-                />
-            </AdvancedMarker>
+            <Circle
+                center={lastUpdatedCenter}
+                radius={(1610 * filterState.maxDistancePercent) / 100}
+                strokeColor={"#000000"}
+                fillOpacity={0}
+                strokeWeight={2}
+            />
         </Map>
     );
 }

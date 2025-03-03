@@ -29,10 +29,10 @@ function MaxDistanceFilter() {
                     <span>|</span>
                 </div>
                 <div className="mt-2 flex justify-between px-2.5 text-xs">
+                    <span>1/4 mi</span>
                     <span>1/2 mi</span>
+                    <span>3/4 mi</span>
                     <span>1 mi</span>
-                    <span>1.5 mi</span>
-                    <span>2 mi</span>
                 </div>
             </div>
         </fieldset>

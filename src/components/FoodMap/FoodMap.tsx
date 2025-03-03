@@ -27,8 +27,14 @@ function FoodMap() {
     const foodMapContext = useFoodMapContext();
     const foodMapState = foodMapContext.state;
 
-    const { center, zoom, lastUpdatedCenter, lastUpdatedZoom, foodLocations } =
-        foodMapState;
+    const {
+        center,
+        zoom,
+        lastUpdatedCenter,
+        lastUpdatedZoom,
+        foodLocations,
+        lastUpdatedRadius,
+    } = foodMapState;
 
     const filterContext = useFilterContext();
     const filterState = filterContext.state;
@@ -203,13 +209,15 @@ function FoodMap() {
                     return null;
                 }
             })}
-            <Circle
-                center={lastUpdatedCenter}
-                radius={(1610 * filterState.maxDistancePercent) / 100}
-                strokeColor={"#000000"}
-                fillOpacity={0}
-                strokeWeight={2}
-            />
+            {lastUpdatedCenter && lastUpdatedRadius ? (
+                <Circle
+                    center={lastUpdatedCenter}
+                    radius={lastUpdatedRadius}
+                    strokeColor={"#000000"}
+                    fillOpacity={0}
+                    strokeWeight={2}
+                />
+            ) : null}
         </Map>
     );
 }

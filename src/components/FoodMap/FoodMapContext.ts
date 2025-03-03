@@ -10,6 +10,7 @@ interface State {
     zoom?: number;
     lastUpdatedZoom?: number;
     lastUpdatedCenter?: latLngPosition;
+    lastUpdatedRadius?: number;
     foodLocations?: google.maps.places.Place[];
 }
 
@@ -17,19 +18,22 @@ enum FoodMapAction {
     SET_MAP_CAMERA_VALUES = "SET_MAP_CAMERA_VALUES",
     SET_LAST_UPDATED_MAP_CAMERA_VALUES = "SET_LAST_UPDATED_MAP_CAMERA_VALUES",
     SET_FOOD_LOCATIONS = "SET_FOOD_LOCATIONS",
+    SET_LAST_UPDATED_RADIUS = "SET_LAST_UPDATED_RADIUS",
 }
 
 interface Action {
     type:
         | FoodMapAction.SET_MAP_CAMERA_VALUES
         | FoodMapAction.SET_LAST_UPDATED_MAP_CAMERA_VALUES
-        | FoodMapAction.SET_FOOD_LOCATIONS;
+        | FoodMapAction.SET_FOOD_LOCATIONS
+        | FoodMapAction.SET_LAST_UPDATED_RADIUS;
     payload: {
         center?: latLngPosition;
         zoom?: number;
         lastUpdatedZoom?: number;
         lastUpdatedCenter?: latLngPosition;
         foodLocations?: google.maps.places.Place[];
+        lastUpdatedRadius?: number;
     };
 }
 
@@ -54,6 +58,12 @@ const foodMapReducer = (state: State, action: Action): State => {
                 ...state,
                 foodLocations:
                     action.payload.foodLocations ?? state.foodLocations,
+            };
+        case FoodMapAction.SET_LAST_UPDATED_RADIUS:
+            return {
+                ...state,
+                lastUpdatedRadius:
+                    action.payload.lastUpdatedRadius ?? state.lastUpdatedRadius,
             };
         default:
             return state;

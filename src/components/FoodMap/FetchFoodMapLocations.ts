@@ -51,6 +51,9 @@ const useFetchFoodMapLocations = () => {
                         uniqueIncludedTypes = ["restaurant"];
                     }
 
+                    const searchRadius =
+                        (1610 * filterState.maxDistancePercent) / 100;
+
                     const request = {
                         includedTypes: uniqueIncludedTypes,
                         fields: [
@@ -72,8 +75,7 @@ const useFetchFoodMapLocations = () => {
                         ],
                         locationRestriction: {
                             center: foodMapState.center,
-                            radius:
-                                (1610 * filterState.maxDistancePercent) / 100,
+                            radius: searchRadius,
                         },
                         rankPreference:
                             google.maps.places.SearchNearbyRankPreference
@@ -145,6 +147,13 @@ const useFetchFoodMapLocations = () => {
                         payload: {
                             lastUpdatedCenter: foodMapState.center,
                             lastUpdatedZoom: foodMapState.zoom,
+                        },
+                    });
+
+                    foodMapDispatch({
+                        type: FoodMapAction.SET_LAST_UPDATED_RADIUS,
+                        payload: {
+                            lastUpdatedRadius: searchRadius,
                         },
                     });
                 }

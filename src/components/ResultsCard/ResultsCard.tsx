@@ -92,7 +92,7 @@ function ResultsCard({ gmapsLocation }: ResultsCardProps) {
                 setHoveredLocationId(id);
             }}
             onMouseLeave={() => setHoveredLocationId("")}
-            className={`card bg-base-100 shadow-md ${generateCardBorderStyle(id)}`}
+            className={`card bg-base-100 ${generateCardBorderStyle(id)}`}
             id={`${id}`}
         >
             {hasPhotos && photoUrl ? (
@@ -161,13 +161,23 @@ function ResultsCard({ gmapsLocation }: ResultsCardProps) {
                 ) : null}
                 {websiteURI ? (
                     <div>
-                        <a className="link truncate" href={websiteURI}>
+                        <a
+                            className="link truncate"
+                            href={websiteURI}
+                            rel="noreferrer"
+                            target="_blank"
+                        >
                             Website
                         </a>
                     </div>
                 ) : null}
                 {googleMapsURI ? (
-                    <a className="link" href={googleMapsURI}>
+                    <a
+                        className="link"
+                        href={googleMapsURI}
+                        rel="noreferrer"
+                        target="_blank"
+                    >
                         View On Google
                     </a>
                 ) : null}

@@ -300,6 +300,9 @@ function FoodMap() {
                     return null;
                 }
             })}
+            <AdvancedMarker position={lastUpdatedCenter}>
+                <div className="text-3xl">+</div>
+            </AdvancedMarker>
             {lastUpdatedCenter && lastUpdatedRadius ? (
                 <Circle
                     center={lastUpdatedCenter}

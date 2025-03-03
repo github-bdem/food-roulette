@@ -92,17 +92,6 @@ function PreferencesMenu() {
                                     Pastel
                                 </label>
                             </li>
-                            <li>
-                                <label className="flex cursor-pointer items-center gap-2">
-                                    <input
-                                        type="radio"
-                                        name="theme-radios"
-                                        className="radio radio-sm theme-controller"
-                                        value="cmyk"
-                                    />
-                                    CMYK
-                                </label>
-                            </li>
                         </ul>
                     </details>
                 </li>

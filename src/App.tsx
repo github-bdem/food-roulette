@@ -25,7 +25,14 @@ function App() {
                         />
                         <div className="drawer-content flex size-full flex-col">
                             <div className="navbar bg-primary navbar-height flex justify-between p-4 shadow-sm">
-                                <div>Food Roulette</div>
+                                <div
+                                    className="text-base md:text-2xl"
+                                    style={{
+                                        fontFamily: "Momentz",
+                                    }}
+                                >
+                                    Food Roulette
+                                </div>
                                 <div className="flex flex-row gap-4">
                                     <UpdateOnMoveToggle />
                                     <PreferencesMenu />

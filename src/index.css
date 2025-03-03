@@ -58,3 +58,8 @@ body,
 
     min-width: var(--min-app-width);
 }
+
+@font-face {
+    font-family: "Momentz";
+    src: local("Momentz"), url("./assets/fonts/Momentz.ttf");
+}

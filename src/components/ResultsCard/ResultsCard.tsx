@@ -86,10 +86,12 @@ function ResultsCard({ gmapsLocation }: ResultsCardProps) {
                     Show On Map
                 </button>
                 {currentDayHour ? <p>Todays Hours: {currentDayHour}</p> : null}
-                <div className="flex flex-row justify-between">
-                    <div>About {approximateTimeToWalk.toFixed(0)} min walk</div>
-                    <div>{approximateDistance.toFixed(2)} km</div>
-                </div>
+                {approximateTimeToWalk && approximateDistance ? (
+                    <div>
+                        About {approximateTimeToWalk.toFixed(0)} min walk (
+                        {approximateDistance.toFixed(2)} km)
+                    </div>
+                ) : null}
                 {priceLevel ? (
                     <div>Price Level: {upperFirst(priceLevel)}</div>
                 ) : null}

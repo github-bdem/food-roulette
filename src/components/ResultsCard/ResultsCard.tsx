@@ -13,7 +13,7 @@ const upperFirst = (str: string): string => {
 
 function ResultsCard({ gmapsLocation }: ResultsCardProps) {
     const { state } = useFoodMapContext();
-    const { center } = state;
+    const { lastUpdatedCenter } = state;
 
     // ANYTHING THAT LISTS NEEDING A GET DETAILS REQUEST NEEDS TO BE HIDDEN UNDER THE MORE DROPDOWN
     const {
@@ -31,16 +31,20 @@ function ResultsCard({ gmapsLocation }: ResultsCardProps) {
         isReservable,
         hasTakeout,
         id,
+        regularOpeningHours,
     } = gmapsLocation;
 
     const hasPhotos = photos && photos.length > 0;
     const photoUrl = hasPhotos ? photos[0].getURI() : null;
-    const shouldShowDistance = location && center;
+    const shouldShowDistance = location && lastUpdatedCenter;
     const convertedLocationCenter =
         location && convertGmapsLatLngToLatLng(location);
     const approximateDistance =
         shouldShowDistance && convertedLocationCenter
-            ? computeDistanceBetweenLatLng(center, convertedLocationCenter)
+            ? computeDistanceBetweenLatLng(
+                  lastUpdatedCenter,
+                  convertedLocationCenter,
+              )
             : 0;
     const approximateTimeToWalk = approximateDistance
         ? approximateDistance * 15
@@ -52,6 +56,11 @@ function ResultsCard({ gmapsLocation }: ResultsCardProps) {
             setMapCenterAndZoom(convertedLocationCenter, 18);
         }
     };
+
+    const currentDate = new Date();
+    const currentDay = currentDate.getDay();
+    const currentDayHour =
+        regularOpeningHours?.weekdayDescriptions[currentDay].split(": ")[1];
 
     return (
         <div className="card bg-base-100 shadow-md" id={`${id}`}>
@@ -76,6 +85,7 @@ function ResultsCard({ gmapsLocation }: ResultsCardProps) {
                 >
                     Show On Map
                 </button>
+                {currentDayHour ? <p>Todays Hours: {currentDayHour}</p> : null}
                 <div className="flex flex-row justify-between">
                     <div>About {approximateTimeToWalk.toFixed(0)} min walk</div>
                     <div>{approximateDistance.toFixed(2)} km</div>

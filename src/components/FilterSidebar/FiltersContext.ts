@@ -162,7 +162,7 @@ interface ContextProps {
 const initialFilterState = {
     updateOnMapMove: false,
     foodTypeFilters: [],
-    includeOpenNow: false,
+    includeOpenNow: true,
     maxDistancePercent: 50,
     includeReservationsAvailable: false,
     includeDeliveryAvailable: false,

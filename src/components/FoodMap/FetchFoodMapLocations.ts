@@ -5,6 +5,7 @@ import {
     GmapsFoodTypeFilter,
     useFilterContext,
 } from "../FilterSidebar/FiltersContext";
+import isOpenNow from "../ResultsCard/OpenNowCheck";
 
 const foodPriceMapping = {
     EXPENSIVE: 1,
@@ -67,6 +68,7 @@ const useFetchFoodMapLocations = () => {
                             "isReservable",
                             "hasTakeout",
                             "id",
+                            "regularOpeningHours",
                         ],
                         locationRestriction: {
                             center: foodMapState.center,
@@ -121,6 +123,14 @@ const useFetchFoodMapLocations = () => {
                         if (filterState.includeTakeawayAvailable) {
                             nearbyPlaces = nearbyPlaces.filter(
                                 (place) => place.hasTakeout,
+                            );
+                        }
+
+                        if (filterState.includeOpenNow) {
+                            nearbyPlaces = nearbyPlaces.filter((place) =>
+                                place.regularOpeningHours
+                                    ? isOpenNow(place.regularOpeningHours)
+                                    : false,
                             );
                         }
 

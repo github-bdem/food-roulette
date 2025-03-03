@@ -81,6 +81,7 @@ const initialCenter = { lat: 37.7749, lng: -122.4194 };
 const initialFoodMapState = {
     center: initialCenter,
     zoom: initialZoom,
+    lastUpdatedRadius: 1610 * (50 / 100), // 1 mile in meters * (initial maxDistancePercent)
     foodLocations: [],
 };
 

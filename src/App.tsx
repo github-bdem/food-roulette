@@ -39,7 +39,7 @@ function App() {
                                 </div>
                             </div>
                             <div className="map-and-sidebar-container-height-hack flex h-full flex-col-reverse md:h-full md:flex-row">
-                                <div className="bg-base-200 flex h-2/3 overflow-y-scroll md:h-full md:w-[600px]">
+                                <div className="flex h-2/3 overflow-y-scroll md:h-full md:w-[600px]">
                                     <ResultsSidebar />
                                 </div>
                                 <div className="flex h-1/3 flex-col items-center justify-center md:h-full md:w-full">

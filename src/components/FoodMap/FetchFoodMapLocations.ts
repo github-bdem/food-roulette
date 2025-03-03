@@ -52,7 +52,7 @@ const useFetchFoodMapLocations = () => {
                     }
 
                     const searchRadius =
-                        (1610 * filterState.maxDistancePercent) / 100;
+                        1610 * (filterState.maxDistancePercent / 100);
 
                     const request = {
                         includedTypes: uniqueIncludedTypes,

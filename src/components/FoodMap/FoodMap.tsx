@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
     AdvancedMarker,
     ControlPosition,
@@ -20,7 +20,7 @@ import "./FoodMap.css";
 const minimumCenterDeltaToTriggerUpdate = 2; // Delta is expressed in km
 const minimumZoomLevelDeltaToTriggerUpdate = 2;
 
-interface ShouldFetchNewPizzaLocationsProps {
+interface ShouldFetchNewFoodLocationsProps {
     newCenter: latLngPosition;
     newZoom: number;
 }
@@ -50,6 +50,9 @@ function FoodMap() {
     const { setMapCenterAndZoom, setFocusedLocationId, setHoveredLocationId } =
         useFoodMapContextInteractions();
 
+    const [totalFoodLocationCallCount, setTotalFoodLocationCallCount] =
+        useState<number>(0);
+
     useEffect(() => {
         const geolocationOptions = {
             enableHighAccuracy: true,
@@ -61,7 +64,9 @@ function FoodMap() {
                 lat: pos.coords.latitude,
                 lng: pos.coords.longitude,
             } as latLngPosition;
-            setMapCenterAndZoom(center);
+            {
+                setMapCenterAndZoom(center);
+            }
         };
         navigator.geolocation.getCurrentPosition(
             successFunction,
@@ -73,9 +78,12 @@ function FoodMap() {
     const shouldFetchNewFoodLocations = ({
         newCenter,
         newZoom,
-    }: ShouldFetchNewPizzaLocationsProps) => {
-        const initialFetchCheck = !lastUpdatedCenter && !lastUpdatedZoom;
+    }: ShouldFetchNewFoodLocationsProps) => {
+        const initialFetchCheck =
+            (!lastUpdatedCenter && !lastUpdatedZoom) ||
+            totalFoodLocationCallCount < 2;
         if (initialFetchCheck) {
+            setTotalFoodLocationCallCount(totalFoodLocationCallCount + 1);
             return true;
         }
         const hasAllDimensions =

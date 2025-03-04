@@ -92,7 +92,7 @@ function ResultsCard({ gmapsLocation }: ResultsCardProps) {
                 setHoveredLocationId(id);
             }}
             onMouseLeave={() => setHoveredLocationId("")}
-            className={`card bg-base-100 ${generateCardBorderStyle(id)}`}
+            className={`card bg-base-100 shadow-2xl ${generateCardBorderStyle(id)}`}
             id={`${id}`}
         >
             {hasPhotos && photoUrl ? (
@@ -108,8 +108,8 @@ function ResultsCard({ gmapsLocation }: ResultsCardProps) {
                     <span className="text-3xl">D</span>
                 </div>
             )}
-            <div className="card-body overflow-hidden">
-                <h2 className="card-title">{displayName}</h2>
+            <div className="card-body flex flex-col">
+                <h2 className="card-title text-wrap">{displayName}</h2>
                 <button
                     className="btn btn-primary mr-2"
                     onClick={centerOnLocation}
@@ -117,29 +117,35 @@ function ResultsCard({ gmapsLocation }: ResultsCardProps) {
                     Show On Map
                 </button>
                 {currentDayHours ? (
-                    <p>Todays Hours: {currentDayHours}</p>
+                    <div className="text-wrap">
+                        Todays Hours: {currentDayHours}
+                    </div>
                 ) : null}
                 {approximateTimeToWalk && approximateDistance ? (
-                    <div>
+                    <div className="text-wrap">
                         About {approximateTimeToWalk.toFixed(0)} min walk (
                         {approximateDistance.toFixed(2)} km)
                     </div>
                 ) : null}
                 {priceLevel ? (
-                    <div>Price Level: {upperFirst(priceLevel)}</div>
+                    <div className="text-wrap">
+                        Price Level: {upperFirst(priceLevel)}
+                    </div>
                 ) : null}
                 {userRatingCount && rating ? (
-                    <div>
+                    <div className="text-wrap">
                         Rating: {rating} / 5 (
                         {new Intl.NumberFormat("en-US").format(userRatingCount)}{" "}
                         reviews)
                     </div>
                 ) : null}
                 {hasDelivery !== undefined ? (
-                    <div>Delivery Available: {hasDelivery ? "Yes" : "No"}</div>
+                    <div className="text-wrap">
+                        Delivery Available: {hasDelivery ? "Yes" : "No"}
+                    </div>
                 ) : null}
                 {isReservable !== undefined ? (
-                    <div>
+                    <div className="text-wrap">
                         Reservations Available: {isReservable ? "Yes" : "No"}
                     </div>
                 ) : null}
@@ -148,19 +154,19 @@ function ResultsCard({ gmapsLocation }: ResultsCardProps) {
                 ) : null}
                 <div className="divider" />
                 {formattedAddress ? (
-                    <div>
-                        <a className="truncate">{formattedAddress}</a>
+                    <div className="text-wrap">
+                        <a>{formattedAddress}</a>
                     </div>
                 ) : null}
                 {nationalPhoneNumber ? (
-                    <div>
+                    <div className="text-wrap">
                         <a className="link" href={`tel:${nationalPhoneNumber}`}>
                             {nationalPhoneNumber}
                         </a>
                     </div>
                 ) : null}
                 {websiteURI ? (
-                    <div>
+                    <div className="text-wrap">
                         <a
                             className="link truncate"
                             href={websiteURI}
@@ -172,14 +178,16 @@ function ResultsCard({ gmapsLocation }: ResultsCardProps) {
                     </div>
                 ) : null}
                 {googleMapsURI ? (
-                    <a
-                        className="link"
-                        href={googleMapsURI}
-                        rel="noreferrer"
-                        target="_blank"
-                    >
-                        View On Google
-                    </a>
+                    <div className="text-wrap">
+                        <a
+                            className="link"
+                            href={googleMapsURI}
+                            rel="noreferrer"
+                            target="_blank"
+                        >
+                            View On Google
+                        </a>
+                    </div>
                 ) : null}
             </div>
         </div>

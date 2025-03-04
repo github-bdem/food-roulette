@@ -53,7 +53,7 @@ body,
 
     /* Style variables */
     --navbar-height: 64px;
-    --min-app-width: 450px;
+    --min-app-width: 350px;
 
     min-width: var(--min-app-width);
 }

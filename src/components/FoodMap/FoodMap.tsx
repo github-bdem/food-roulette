@@ -47,12 +47,8 @@ function FoodMap() {
 
     const { fetchFoodLocations } = useFetchFoodMapLocations();
 
-    const {
-        setMapCenter,
-        setMapCenterAndZoom,
-        setFocusedLocationId,
-        setHoveredLocationId,
-    } = useFoodMapContextInteractions();
+    const { setMapCenterAndZoom, setFocusedLocationId, setHoveredLocationId } =
+        useFoodMapContextInteractions();
 
     useEffect(() => {
         const geolocationOptions = {
@@ -65,14 +61,14 @@ function FoodMap() {
                 lat: pos.coords.latitude,
                 lng: pos.coords.longitude,
             } as latLngPosition;
-            setMapCenter(center);
+            setMapCenterAndZoom(center);
         };
         navigator.geolocation.getCurrentPosition(
             successFunction,
             () => null,
             geolocationOptions,
         );
-    }, [setMapCenter]);
+    }, [setMapCenterAndZoom]);
 
     const shouldFetchNewFoodLocations = ({
         newCenter,

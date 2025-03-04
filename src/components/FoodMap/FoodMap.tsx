@@ -169,15 +169,9 @@ function FoodMap() {
         }
     };
 
-    const handleFoodLocationClick = (
-        id: string,
-        convertedLocationCenter: latLngPosition | null,
-    ) => {
+    const handleFoodLocationClick = (id: string) => {
         scrollCardIntoView(id);
         setFocusedLocationId(id);
-        if (convertedLocationCenter) {
-            setMapCenterAndZoom(convertedLocationCenter, 18);
-        }
     };
 
     const handleFoodLocationMouseEnter = (id: string) => {
@@ -216,7 +210,7 @@ function FoodMap() {
                 const convertedLocationCenter =
                     convertGmapsLatLngToLatLng(location);
                 if (convertedLocationCenter) {
-                    setMapCenterAndZoom(convertedLocationCenter, 18);
+                    setMapCenterAndZoom(convertedLocationCenter);
                 }
             }
             scrollCardIntoView(id);
@@ -232,12 +226,12 @@ function FoodMap() {
             onTilesLoaded={onTilesLoaded}
             mapId="FOOD_ROULETTE_FOOD_MAP"
             zoomControlOptions={{
-                position: ControlPosition.TOP_LEFT,
+                position: ControlPosition.TOP_RIGHT,
             }}
             mapTypeControl={false}
             fullscreenControl={false}
             streetViewControlOptions={{
-                position: ControlPosition.TOP_LEFT,
+                position: ControlPosition.TOP_RIGHT,
             }}
             keyboardShortcuts={true}
             clickableIcons={false}
@@ -280,12 +274,7 @@ function FoodMap() {
                             onMouseLeave={handleFoodLocationMouseLeave}
                             key={location.id}
                             position={convertedLocationCenter}
-                            onClick={() =>
-                                handleFoodLocationClick(
-                                    location.id,
-                                    convertedLocationCenter,
-                                )
-                            }
+                            onClick={() => handleFoodLocationClick(location.id)}
                         >
                             <div
                                 className={generateFoodLocationStyle(

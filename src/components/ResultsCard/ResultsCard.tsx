@@ -59,7 +59,7 @@ function ResultsCard({ gmapsLocation }: ResultsCardProps) {
 
     const centerOnLocation = () => {
         if (convertedLocationCenter) {
-            setMapCenterAndZoom(convertedLocationCenter, 18);
+            setMapCenterAndZoom(convertedLocationCenter);
             const cardElement = document.getElementById(`${id}`);
             if (cardElement) {
                 cardElement.scrollIntoView({
@@ -96,9 +96,9 @@ function ResultsCard({ gmapsLocation }: ResultsCardProps) {
             id={`${id}`}
         >
             {hasPhotos && photoUrl ? (
-                <figure className="h-60">
+                <figure className="md:h-60">
                     <img
-                        className="block"
+                        className="hidden md:block"
                         src={photoUrl}
                         alt={displayName ?? "establishment"}
                     />
@@ -110,12 +110,7 @@ function ResultsCard({ gmapsLocation }: ResultsCardProps) {
             )}
             <div className="card-body flex flex-col">
                 <h2 className="card-title text-wrap">{displayName}</h2>
-                <button
-                    className="btn btn-primary mr-2"
-                    onClick={centerOnLocation}
-                >
-                    Show On Map
-                </button>
+
                 {currentDayHours ? (
                     <div className="text-wrap">
                         Todays Hours: {currentDayHours}
@@ -127,68 +122,91 @@ function ResultsCard({ gmapsLocation }: ResultsCardProps) {
                         {approximateDistance.toFixed(2)} km)
                     </div>
                 ) : null}
-                {priceLevel ? (
-                    <div className="text-wrap">
-                        Price Level: {upperFirst(priceLevel)}
+
+                <div className="bg-base-100 collapse-plus collapse">
+                    <input type="checkbox" />
+                    <div className="collapse-title font-semibold">
+                        More Details
                     </div>
-                ) : null}
-                {userRatingCount && rating ? (
-                    <div className="text-wrap">
-                        Rating: {rating} / 5 (
-                        {new Intl.NumberFormat("en-US").format(userRatingCount)}{" "}
-                        reviews)
+                    <div className="collapse-content text-sm">
+                        {priceLevel ? (
+                            <div className="text-wrap">
+                                Price Level: {upperFirst(priceLevel)}
+                            </div>
+                        ) : null}
+                        {userRatingCount && rating ? (
+                            <div className="text-wrap">
+                                Rating: {rating} / 5 (
+                                {new Intl.NumberFormat("en-US").format(
+                                    userRatingCount,
+                                )}{" "}
+                                reviews)
+                            </div>
+                        ) : null}
+                        {hasDelivery !== undefined ? (
+                            <div className="text-wrap">
+                                Delivery Available: {hasDelivery ? "Yes" : "No"}
+                            </div>
+                        ) : null}
+                        {isReservable !== undefined ? (
+                            <div className="text-wrap">
+                                Reservations Available:{" "}
+                                {isReservable ? "Yes" : "No"}
+                            </div>
+                        ) : null}
+                        {hasTakeout !== undefined ? (
+                            <div>
+                                Takeout Available: {hasTakeout ? "Yes" : "No"}
+                            </div>
+                        ) : null}
+                        <div className="divider" />
+                        {formattedAddress ? (
+                            <div className="text-wrap">
+                                <a>{formattedAddress}</a>
+                            </div>
+                        ) : null}
+                        {nationalPhoneNumber ? (
+                            <div className="text-wrap">
+                                <a
+                                    className="link"
+                                    href={`tel:${nationalPhoneNumber}`}
+                                >
+                                    {nationalPhoneNumber}
+                                </a>
+                            </div>
+                        ) : null}
+                        {websiteURI ? (
+                            <div className="text-wrap">
+                                <a
+                                    className="link truncate"
+                                    href={websiteURI}
+                                    rel="noreferrer"
+                                    target="_blank"
+                                >
+                                    Website
+                                </a>
+                            </div>
+                        ) : null}
+                        {googleMapsURI ? (
+                            <div className="text-wrap">
+                                <a
+                                    className="link"
+                                    href={googleMapsURI}
+                                    rel="noreferrer"
+                                    target="_blank"
+                                >
+                                    View On Google
+                                </a>
+                            </div>
+                        ) : null}
                     </div>
-                ) : null}
-                {hasDelivery !== undefined ? (
-                    <div className="text-wrap">
-                        Delivery Available: {hasDelivery ? "Yes" : "No"}
-                    </div>
-                ) : null}
-                {isReservable !== undefined ? (
-                    <div className="text-wrap">
-                        Reservations Available: {isReservable ? "Yes" : "No"}
-                    </div>
-                ) : null}
-                {hasTakeout !== undefined ? (
-                    <div>Takeout Available: {hasTakeout ? "Yes" : "No"}</div>
-                ) : null}
-                <div className="divider" />
-                {formattedAddress ? (
-                    <div className="text-wrap">
-                        <a>{formattedAddress}</a>
-                    </div>
-                ) : null}
-                {nationalPhoneNumber ? (
-                    <div className="text-wrap">
-                        <a className="link" href={`tel:${nationalPhoneNumber}`}>
-                            {nationalPhoneNumber}
-                        </a>
-                    </div>
-                ) : null}
-                {websiteURI ? (
-                    <div className="text-wrap">
-                        <a
-                            className="link truncate"
-                            href={websiteURI}
-                            rel="noreferrer"
-                            target="_blank"
-                        >
-                            Website
-                        </a>
-                    </div>
-                ) : null}
-                {googleMapsURI ? (
-                    <div className="text-wrap">
-                        <a
-                            className="link"
-                            href={googleMapsURI}
-                            rel="noreferrer"
-                            target="_blank"
-                        >
-                            View On Google
-                        </a>
-                    </div>
-                ) : null}
+                </div>
+                <button
+                    className="btn btn-primary mr-2"
+                    onClick={centerOnLocation}
+                >
+                    Show On Map
+                </button>
             </div>
         </div>
     );

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
     AdvancedMarker,
     ControlPosition,
@@ -20,7 +20,7 @@ import "./FoodMap.css";
 const minimumCenterDeltaToTriggerUpdate = 2; // Delta is expressed in km
 const minimumZoomLevelDeltaToTriggerUpdate = 2;
 
-interface ShouldFetchNewPizzaLocationsProps {
+interface ShouldFetchNewFoodLocationsProps {
     newCenter: latLngPosition;
     newZoom: number;
 }
@@ -47,12 +47,11 @@ function FoodMap() {
 
     const { fetchFoodLocations } = useFetchFoodMapLocations();
 
-    const {
-        setMapCenter,
-        setMapCenterAndZoom,
-        setFocusedLocationId,
-        setHoveredLocationId,
-    } = useFoodMapContextInteractions();
+    const { setMapCenterAndZoom, setFocusedLocationId, setHoveredLocationId } =
+        useFoodMapContextInteractions();
+
+    const [totalFoodLocationCallCount, setTotalFoodLocationCallCount] =
+        useState<number>(0);
 
     useEffect(() => {
         const geolocationOptions = {
@@ -65,21 +64,26 @@ function FoodMap() {
                 lat: pos.coords.latitude,
                 lng: pos.coords.longitude,
             } as latLngPosition;
-            setMapCenter(center);
+            {
+                setMapCenterAndZoom(center);
+            }
         };
         navigator.geolocation.getCurrentPosition(
             successFunction,
             () => null,
             geolocationOptions,
         );
-    }, [setMapCenter]);
+    }, [setMapCenterAndZoom]);
 
     const shouldFetchNewFoodLocations = ({
         newCenter,
         newZoom,
-    }: ShouldFetchNewPizzaLocationsProps) => {
-        const initialFetchCheck = !lastUpdatedCenter && !lastUpdatedZoom;
+    }: ShouldFetchNewFoodLocationsProps) => {
+        const initialFetchCheck =
+            (!lastUpdatedCenter && !lastUpdatedZoom) ||
+            totalFoodLocationCallCount < 2;
         if (initialFetchCheck) {
+            setTotalFoodLocationCallCount(totalFoodLocationCallCount + 1);
             return true;
         }
         const hasAllDimensions =
@@ -165,15 +169,9 @@ function FoodMap() {
         }
     };
 
-    const handleFoodLocationClick = (
-        id: string,
-        convertedLocationCenter: latLngPosition | null,
-    ) => {
+    const handleFoodLocationClick = (id: string) => {
         scrollCardIntoView(id);
         setFocusedLocationId(id);
-        if (convertedLocationCenter) {
-            setMapCenterAndZoom(convertedLocationCenter, 18);
-        }
     };
 
     const handleFoodLocationMouseEnter = (id: string) => {
@@ -212,7 +210,7 @@ function FoodMap() {
                 const convertedLocationCenter =
                     convertGmapsLatLngToLatLng(location);
                 if (convertedLocationCenter) {
-                    setMapCenterAndZoom(convertedLocationCenter, 18);
+                    setMapCenterAndZoom(convertedLocationCenter);
                 }
             }
             scrollCardIntoView(id);
@@ -228,12 +226,12 @@ function FoodMap() {
             onTilesLoaded={onTilesLoaded}
             mapId="FOOD_ROULETTE_FOOD_MAP"
             zoomControlOptions={{
-                position: ControlPosition.TOP_LEFT,
+                position: ControlPosition.TOP_RIGHT,
             }}
             mapTypeControl={false}
             fullscreenControl={false}
             streetViewControlOptions={{
-                position: ControlPosition.TOP_LEFT,
+                position: ControlPosition.TOP_RIGHT,
             }}
             keyboardShortcuts={true}
             clickableIcons={false}
@@ -276,12 +274,7 @@ function FoodMap() {
                             onMouseLeave={handleFoodLocationMouseLeave}
                             key={location.id}
                             position={convertedLocationCenter}
-                            onClick={() =>
-                                handleFoodLocationClick(
-                                    location.id,
-                                    convertedLocationCenter,
-                                )
-                            }
+                            onClick={() => handleFoodLocationClick(location.id)}
                         >
                             <div
                                 className={generateFoodLocationStyle(

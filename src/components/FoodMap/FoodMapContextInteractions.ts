@@ -10,12 +10,6 @@ const useFoodMapContextInteractions = () => {
 
     const filterContextUpdateActions = useMemo(
         () => ({
-            setMapCenter: (center: latLngPosition) => {
-                dispatch({
-                    type: FoodMapAction.SET_MAP_CAMERA_VALUES,
-                    payload: { center },
-                });
-            },
             setMapCenterAndZoom: (center?: latLngPosition, zoom?: number) => {
                 dispatch({
                     type: FoodMapAction.SET_MAP_CAMERA_VALUES,

@@ -10,7 +10,7 @@ function ResultsSidebar() {
         <>
             {foodLocations?.length ? (
                 <div className="flex w-full flex-col">
-                    <div className="flex flex-col gap-3 p-3">
+                    <div className="flex snap-both flex-col gap-3 p-3">
                         {foodLocations?.map(
                             (item: google.maps.places.Place, index: number) => (
                                 <ResultsCard

@@ -39,10 +39,10 @@ function App() {
                                 </div>
                             </div>
                             <div className="map-and-sidebar-container-height-hack flex h-full flex-col-reverse md:h-full md:flex-row">
-                                <div className="flex h-2/3 overflow-y-scroll md:h-full md:w-[600px]">
+                                <div className="flex h-1/2 w-full overflow-y-scroll md:h-full md:w-[450px]">
                                     <ResultsSidebar />
                                 </div>
-                                <div className="flex h-1/3 flex-col items-center justify-center md:h-full md:w-full">
+                                <div className="lex-col flex h-1/2 items-center justify-center md:h-full md:w-full">
                                     <FoodMap />
                                 </div>
                             </div>

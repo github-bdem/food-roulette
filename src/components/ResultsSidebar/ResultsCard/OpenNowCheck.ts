@@ -1,7 +1,7 @@
 function isOpenNow(
-    regularOpeningHousers: google.maps.places.OpeningHours,
+    regularOpeningHours: google.maps.places.OpeningHours,
 ): boolean {
-    const periods = regularOpeningHousers.periods;
+    const periods = regularOpeningHours.periods;
     const currentDate = new Date();
     const currentDay = currentDate.getDay();
     const currentHour = currentDate.getHours();
@@ -10,8 +10,10 @@ function isOpenNow(
     for (const period of periods) {
         const isOpenToday = currentDay === period.open.day;
         const isAfterOpening =
-            currentHour >= period.open.hour &&
-            currentMinute >= period.open.minute;
+            currentHour > period.open.hour ||
+            (currentHour === period.open.hour &&
+                currentMinute >= period.open.minute);
+        console.log("isAfterOpening", isAfterOpening);
         if (isOpenToday && isAfterOpening) {
             if (period.close) {
                 if (currentHour < period.close.hour) {

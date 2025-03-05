@@ -5,7 +5,7 @@ import {
     GmapsFoodTypeFilter,
     useFilterContext,
 } from "../FilterSidebar/FiltersContext";
-import isOpenNow from "../ResultsCard/OpenNowCheck";
+import isOpenNow from "../ResultsSidebar/ResultsCard/OpenNowCheck";
 
 const foodPriceMapping = {
     EXPENSIVE: 1,

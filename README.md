@@ -21,6 +21,7 @@ This project was created using:
 - [DaisyUI v5](https://daisyui.com/)
 - [React Google Maps](https://visgl.github.io/react-google-maps/)
 - [New Google Maps Places API](https://developers.google.com/maps/documentation/places/web-service/nearby-search)
+- [Vitest](https://vitest.dev/)
 
 ## Technical Features
 

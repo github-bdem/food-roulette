@@ -1,7 +1,7 @@
-import computeDistanceBetweenLatLng from "../FoodMap/ComputeDistanceBetweenLatLng";
-import convertGmapsLatLngToLatLng from "../FoodMap/ConvertGmapsLatLngToLatLng";
-import { useFoodMapContext } from "../FoodMap/FoodMapContext";
-import useFoodMapContextInteractions from "../FoodMap/FoodMapContextInteractions";
+import computeDistanceBetweenLatLng from "../../FoodMap/ComputeDistanceBetweenLatLng";
+import convertGmapsLatLngToLatLng from "../../FoodMap/ConvertGmapsLatLngToLatLng";
+import { useFoodMapContext } from "../../FoodMap/FoodMapContext";
+import useFoodMapContextInteractions from "../../FoodMap/FoodMapContextInteractions";
 
 interface ResultsCardProps {
     gmapsLocation: google.maps.places.Place;

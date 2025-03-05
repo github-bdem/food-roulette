@@ -1,5 +1,5 @@
 import { useFoodMapContext } from "../FoodMap/FoodMapContext";
-import ResultsCard from "../ResultsCard/ResultsCard";
+import ResultsCard from "./ResultsCard/ResultsCard";
 
 function ResultsSidebar() {
     const { state } = useFoodMapContext();

@@ -13,6 +13,7 @@ function UpdateOnMoveToggle() {
             <label className="fieldset-label">
                 Update on map move
                 <input
+                    data-testid="test-id"
                     type="checkbox"
                     checked={updateOnMapMove}
                     onChange={toggleUpdateOnMapMove}

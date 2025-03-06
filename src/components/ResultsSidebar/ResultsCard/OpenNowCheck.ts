@@ -13,7 +13,6 @@ function isOpenNow(
             currentHour > period.open.hour ||
             (currentHour === period.open.hour &&
                 currentMinute >= period.open.minute);
-        console.log("isAfterOpening", isAfterOpening);
         if (isOpenToday && isAfterOpening) {
             if (period.close) {
                 if (currentHour < period.close.hour) {

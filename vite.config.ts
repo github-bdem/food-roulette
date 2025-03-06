@@ -1,11 +1,6 @@
 /// <reference types="vitest" />
 
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-// TODO: figure out why path.resolve is so busted according to eslint
-
-import { defineConfig } from "vite";
+import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import tsconfigPaths from "vite-tsconfig-paths";
@@ -15,7 +10,9 @@ import path from "path";
 export default defineConfig({
     base: "./",
     test: {
+        globals: true,
         environment: "jsdom",
+        setupFiles: "./vitest.setup.ts",
     },
     resolve: {
         alias: {

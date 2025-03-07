@@ -4,6 +4,8 @@ import UpdateOnMoveToggle from "../UpdateOnMoveToggle";
 import userEvent from "@testing-library/user-event";
 import { FilterContext } from "src/components/FilterSidebar/FiltersContext";
 
+const toggleUpdateOnMapMoveMock = vi.fn();
+
 vi.mock("../../FilterSidebar/FilterContextInteractions", () => {
     return {
         default: vi.fn(() => {
@@ -34,8 +36,6 @@ const renderUpdateOnMoveComponent = (updateOnMapMove: boolean) => {
         </FilterContext.Provider>,
     );
 };
-
-const toggleUpdateOnMapMoveMock = vi.fn();
 
 const user = userEvent.setup();
 

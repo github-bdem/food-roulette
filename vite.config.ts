@@ -14,7 +14,17 @@ export default defineConfig({
         environment: "jsdom",
         setupFiles: "./vitest.setup.ts",
         coverage: {
-            reporter: ["lcov"],
+            enabled: true,
+            include: ["src/**/*.{js,jsx,ts,tsx}"],
+            exclude: [
+                "node_modules",
+                "**/dist",
+                "**/*.test.*",
+                "**/.cache",
+                "**/.git",
+                "**/.vscode",
+            ],
+            reporter: ["lcov", "html"],
         },
     },
     resolve: {

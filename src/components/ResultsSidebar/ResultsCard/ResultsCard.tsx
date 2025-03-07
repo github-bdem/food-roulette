@@ -1,7 +1,8 @@
 import computeDistanceBetweenLatLng from "../../FoodMap/ComputeDistanceBetweenLatLng";
 import convertGmapsLatLngToLatLng from "../../FoodMap/ConvertGmapsLatLngToLatLng";
-import { useFoodMapContext } from "../../FoodMap/FoodMapContext";
 import useFoodMapContextInteractions from "../../FoodMap/FoodMapContextInteractions";
+
+import { useFoodMapContext } from "../../FoodMap/FoodMapContext";
 
 interface ResultsCardProps {
     gmapsLocation: google.maps.places.Place;
@@ -12,13 +13,11 @@ const upperFirst = (str: string): string => {
 };
 
 function ResultsCard({ gmapsLocation }: ResultsCardProps) {
-    const { state } = useFoodMapContext();
-    const { lastUpdatedCenter } = state;
-
     const foodMapContext = useFoodMapContext();
     const foodMapState = foodMapContext.state;
 
-    const { focusedLocationId, hoveredLocationId } = foodMapState;
+    const { focusedLocationId, hoveredLocationId, lastUpdatedCenter } =
+        foodMapState;
 
     const { setMapCenterAndZoom, setFocusedLocationId, setHoveredLocationId } =
         useFoodMapContextInteractions();
@@ -73,6 +72,8 @@ function ResultsCard({ gmapsLocation }: ResultsCardProps) {
 
     const currentDate = new Date();
     const currentDay = currentDate.getDay();
+
+    // TODO: Separate this out into its own function, logic might be wrong based on weekdayDescriptions indexing
     const currentDayHours =
         regularOpeningHours?.weekdayDescriptions[currentDay].split(": ")[1];
 
@@ -103,11 +104,7 @@ function ResultsCard({ gmapsLocation }: ResultsCardProps) {
                         alt={displayName ?? "establishment"}
                     />
                 </figure>
-            ) : (
-                <div className="bg-neutral text-neutral-content w-24 rounded-full">
-                    <span className="text-3xl">D</span>
-                </div>
-            )}
+            ) : null}
             <div className="card-body flex flex-col">
                 <h2 className="card-title text-wrap">{displayName}</h2>
 

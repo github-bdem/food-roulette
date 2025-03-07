@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+        "types": ["vitest/globals", "@testing-library/jest-dom"],
         "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
         "target": "ES2020",
         "useDefineForClassFields": true,
@@ -29,5 +30,5 @@
             "@assets/*": ["./src/assets/*"]
         }
     },
-    "include": ["src"]
+    "include": ["src", "./vitest.setup.ts", "./vite.config.ts"]
 }

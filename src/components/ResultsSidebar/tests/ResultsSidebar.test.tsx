@@ -47,9 +47,9 @@ describe("ResultsSidebar", () => {
                 id: "test1",
             } as google.maps.places.Place,
         ]);
-        const noResultsMessageElement = await screen.findByTestId(
+        const locationCard = await screen.findByTestId(
             "mock-result-card-test1",
         );
-        expect(noResultsMessageElement).toBeInTheDocument();
+        expect(locationCard).toBeInTheDocument();
     });
 });
